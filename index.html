@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1500px; /* 增加容器宽度以容纳左右分屏 */
+            max-width: 1500px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -27,7 +27,7 @@
             overflow: hidden;
         }
 
-        /* 电脑端左右分屏布局 */
+
         .desktop-layout {
             display: flex;
             gap: 30px;
@@ -37,13 +37,13 @@
 
         .left-panel {
             flex: 1;
-            min-width: 0; /* 防止flex子项溢出 */
+            min-width: 0;
             position: relative;
         }
 
         .right-panel {
             flex: 1;
-            min-width: 0; /* 防止flex子项溢出 */
+            min-width: 0;
             border-left: 2px solid #e9ecef;
             padding-left: 30px;
             position: relative;
@@ -60,12 +60,12 @@
             border-radius: 1px;
         }
 
-        /* 手机端保持原有布局 */
+
         .mobile-layout {
             display: block;
         }
 
-        /* 响应式布局切换 */
+
         @media (min-width: 1024px) {
             .desktop-layout {
                 display: flex;
@@ -118,7 +118,7 @@
             }
         }
 
-        /* 电脑端左右分屏时的特殊样式 */
+
         @media (min-width: 1024px) {
             .desktop-layout .section {
                 margin-bottom: 30px;
@@ -162,34 +162,34 @@
                 min-height: auto;
             }
 
-            /* 电脑端表格样式优化 */
+
             .desktop-layout .simulation-table {
                 font-size: 0.9rem;
                 width: 100%;
-                table-layout: auto; /* 让表格根据内容自动调整列宽 */
+                table-layout: auto;
             }
 
             .desktop-layout .simulation-table th,
             .desktop-layout .simulation-table td {
                 padding: 10px 6px;
                 min-width: 60px;
-                white-space: nowrap; /* 防止文字换行 */
+                white-space: nowrap;
                 text-align: center;
             }
 
-            /* 电脑端右侧面板内容区域优化 */
+
             .desktop-layout .right-panel .content {
                 padding: 30px 0 30px 0;
-                height: fit-content; /* 根据内容自适应高度 */
+                height: fit-content;
             }
 
-            /* 确保右侧面板能够完整显示所有内容 */
+
             .desktop-layout .right-panel {
                 height: auto;
                 min-height: 600px;
             }
 
-            /* 电脑端表格容器优化 */
+
             .desktop-layout .simulation-table-container {
                 margin-bottom: 0;
                 border: 2px solid #e9ecef;
@@ -197,7 +197,7 @@
                 background: white;
             }
 
-            /* 确保利润推演结果区域能够完整显示 */
+
             .desktop-layout .profit-simulation-results {
                 height: auto;
                 min-height: 0;
@@ -283,7 +283,6 @@
             background: #f8f9fa;
         }
 
-        /* 只读输入框（自动计算结果）的差异化视觉样式 - 与简化版一致 */
         .input-group input[readonly] {
             background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
             border: 2px solid #28a745;
@@ -299,7 +298,6 @@
             box-shadow: inset 0 2px 4px rgba(40, 167, 69, 0.2);
         }
 
-        /* 利润输入框的盈亏状态颜色（与简化版一致） */
         .input-group input[readonly].profit-positive {
             background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
             border: 2px solid #28a745;
@@ -451,7 +449,7 @@
 
 
 
-        /* 利润推演功能样式 */
+
         .profit-simulation-controls {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 15px;
@@ -505,7 +503,7 @@
             font-size: 1rem;
         }
 
-        /* 电脑端：两个设置项放在同一行 */
+
         .control-groups-container {
             display: flex;
             gap: 30px;
@@ -673,7 +671,7 @@
             }
         }
 
-        /* 标价计算弹窗样式 */
+
         .modal {
             position: fixed;
             z-index: 1000;
@@ -756,7 +754,7 @@
             gap: 8px;
         }
 
-        /* 目标到手价优化布局 */
+
         .target-price-container {
             display: grid;
             grid-template-columns: auto 1fr auto;
@@ -807,7 +805,7 @@
             text-align: center;
         }
 
-        /* 优惠设置对称布局 */
+
         .settings-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -852,7 +850,7 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        /* 满减规则对称布局 */
+
         .tier-header {
             display: flex;
             align-items: center;
@@ -967,7 +965,7 @@
             font-size: 1.1rem;
         }
 
-        /* 浮动按钮样式 */
+
         .floating-button {
             position: fixed;
             bottom: 30px;
@@ -989,7 +987,7 @@
             box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
         }
 
-        /* 响应式弹窗样式 */
+
         @media (max-width: 768px) {
             .modal {
                 padding: 15px;
@@ -1086,12 +1084,12 @@
 
 
 
-        <!-- 电脑端左右分屏布局 -->
+
         <div class="desktop-layout">
-            <!-- 左侧面板：主页面内容 -->
+
             <div class="left-panel">
                 <div class="content">
-                    <!-- 核心财务指标 -->
+
                     <div class="section">
                         <h2>核心财务指标</h2>
                         <div class="input-grid">
@@ -1122,7 +1120,7 @@
                         </div>
                     </div>
 
-                    <!-- 费用设置 -->
+
                     <div class="section">
                         <h2>费用设置</h2>
                         <div class="input-grid">
@@ -1163,7 +1161,7 @@
 
 
 
-                    <!-- 价格指标一览 -->
+
                     <div class="results" id="results" style="display: none;">
                         <h2 style="margin-bottom: 20px;">价格指标一览</h2>
                         <div class="metrics-grid">
@@ -1180,7 +1178,7 @@
                 </div>
             </div>
 
-            <!-- 右侧面板：利润推演模块 -->
+
             <div class="right-panel">
                 <div class="content">
                     <div class="section">
@@ -1215,7 +1213,6 @@
                             <div class="simulation-table-container">
                                 <table class="simulation-table" id="simulationTable">
                                     <tbody>
-                                        <!-- 动态生成内容 -->
                                     </tbody>
                                 </table>
                             </div>
@@ -1225,10 +1222,10 @@
             </div>
         </div>
 
-        <!-- 手机端保持原有布局 -->
+
         <div class="mobile-layout">
             <div class="content">
-                <!-- 核心财务指标 -->
+
                 <div class="section">
                     <h2>核心财务指标</h2>
                     <div class="input-grid">
@@ -1259,7 +1256,7 @@
                     </div>
                 </div>
 
-                <!-- 费用设置 -->
+
                 <div class="section">
                     <h2>费用设置</h2>
                     <div class="input-grid">
@@ -1298,7 +1295,7 @@
                     </div>
                 </div>
 
-                <!-- 利润推演功能 -->
+
                 <div class="section">
                     <h2>利润推演分析</h2>
                     <p style="color: #6c757d; margin-bottom: 20px; line-height: 1.6;">
@@ -1331,7 +1328,6 @@
                         <div class="simulation-table-container">
                             <table class="simulation-table" id="simulationTableMobile">
                                 <tbody>
-                                    <!-- 动态生成内容 -->
                                 </tbody>
                             </table>
                         </div>
@@ -1340,7 +1336,7 @@
 
 
 
-                <!-- 价格指标一览 -->
+
                 <div class="results" id="resultsMobile" style="display: none;">
                     <h2 style="margin-bottom: 20px;">价格指标一览</h2>
                     <div class="metrics-grid">
@@ -1358,24 +1354,21 @@
         </div>
 
     <script>
-        // 精度安全的工具函数
         function yuanToCents(x) {
             const s = String(x ?? '').trim();
             if (!s) return 0;
             const m = s.match(/^(-?\d+)(?:\.(\d{0,}))?$/);
-            if (!m) return Math.round(Number(x) * 100); // 兜底
+            if (!m) return Math.round(Number(x) * 100);
             const int = parseInt(m[1], 10);
             const dec = (m[2] || '').padEnd(2, '0').slice(0, 2);
             const sign = int < 0 ? -1 : 1;
             return sign * (Math.abs(int) * 100 + parseInt(dec || '0', 10));
         }
 
-        // "分"转元（Number，保留2位）
         function centsToYuan(c) { 
             return Number((c / 100).toFixed(2)); 
         }
 
-        // 最大公约数
         function __gcd(a, b) { 
             a = Math.abs(a); 
             b = Math.abs(b); 
@@ -1387,9 +1380,7 @@
             return a || 1; 
         }
 
-        // 将十进制小数(如0.90, 0.88)稳定地转为最简分数 num/den
         function decimalToFractionSafe(d) {
-            // 用字符串避免0.3000000004这类二进制误差
             const str = String(d);
             if (!str.includes('.')) return { num: Number(str), den: 1 };
             const [i, frac] = str.split('.');
@@ -1399,16 +1390,12 @@
             return { num: num / g, den: den / g };
         }
 
-        // 在"厘"(0.001元)精度下乘以分数 (priceCents × num/den)，结果返回"厘"的整数
         function mulCentsByFractionToMils(priceCents, num, den) {
-            // 先把分换算成厘(×10)，再乘分数并向下取整，确保不过冲
             return Math.floor((priceCents * 10 * num) / den);
         }
 
-        // 计算给定S（分）在折扣后触发的最大满减off（分）与阈值（分）
         function calcTierForPriceCents(priceCents, kNum, kDen, tiers) {
             if (!tiers || !tiers.length) return { maxOffCents: 0, usedThresholdCents: null };
-            // 用"分"的保守口径判断触发：向下取整到分，避免把临界值算成已达标
             const afterDiscountCents = Math.floor((priceCents * kNum) / kDen);
             let maxOffCents = 0;
             let usedThresholdCents = null;
@@ -1423,7 +1410,6 @@
             return { maxOffCents, usedThresholdCents };
         }
 
-        // 满减规则启用/禁用控制
         function toggleTierInputs() {
             const checkbox = document.getElementById('tierEnabled');
             const tierInputs = document.getElementById('tierInputs');
@@ -1431,18 +1417,15 @@
             const offInput = document.querySelector('.tier-off');
             
             if (checkbox.checked) {
-                // 启用满减
                 tierInputs.classList.remove('disabled');
                 thresholdInput.disabled = false;
                 offInput.disabled = false;
             } else {
-                // 禁用满减
                 tierInputs.classList.add('disabled');
                 thresholdInput.disabled = true;
                 offInput.disabled = true;
             }
             
-            // 重新计算标价
             calculateListPrice();
         }
 
@@ -1790,7 +1773,6 @@
             }
         }
 
-        // 手机端计算利润函数
         function calculateProfitMobile() {
             try {
                 const costPrice = parseFloat(document.getElementById('costPriceMobile').value) || 0;
@@ -1884,7 +1866,7 @@
                 document.getElementById('markupRatioMobile').textContent = `${markupRatio}倍`;
                 document.getElementById('grossMarginMobile').textContent = `${grossMargin}%`;
 
-                // 设置保本ROI和保本付费占比到手机端对应的元素
+                
                 document.getElementById('breakevenROIMobile').value = breakevenROI;
                 
                 let breakevenAdRateDisplay;
@@ -1905,7 +1887,6 @@
             }
         }
 
-        // 数据同步函数 - 确保两个布局的数据保持一致
         function syncDataBetweenLayouts() {
             const desktopInputs = [
                 'costPrice', 'invoiceCost', 'sellingPrice', 'marketingCost', 'riskRate',
@@ -1921,7 +1902,6 @@
                 'minMarketingCostMobile', 'maxMarketingCostMobile'
             ];
 
-            // 从桌面端同步到手机端
             desktopInputs.forEach((desktopId, index) => {
                 const desktopElement = document.getElementById(desktopId);
                 const mobileElement = document.getElementById(mobileInputs[index]);
@@ -1931,7 +1911,6 @@
             });
         }
 
-        // 从手机端同步到桌面端
         function syncFromMobileToDesktop() {
             const desktopInputs = [
                 'costPrice', 'invoiceCost', 'sellingPrice', 'marketingCost', 'riskRate',
@@ -1956,20 +1935,16 @@
             });
         }
 
-        // 响应式布局检测和切换
         function checkLayoutAndSync() {
             const isDesktop = window.innerWidth >= 1024;
             
             if (isDesktop) {
-                // 桌面端布局，从桌面端同步到手机端
                 syncDataBetweenLayouts();
             } else {
-                // 手机端布局，从手机端同步到桌面端
                 syncFromMobileToDesktop();
             }
         }
 
-        // 窗口大小改变时重新检测布局
         window.addEventListener('resize', function() {
             clearTimeout(this.resizeTimeout);
             this.resizeTimeout = setTimeout(checkLayoutAndSync, 100);
@@ -1978,39 +1953,35 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
             
-            // 桌面端输入框事件监听
+            
             const desktopInputs = document.querySelectorAll('.desktop-layout input[type="number"]');
             desktopInputs.forEach(input => {
                 input.addEventListener('input', function() {
                     saveToLocalStorage();
-                    syncDataBetweenLayouts(); // 同步到手机端
+                    syncDataBetweenLayouts();
                     
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(function() {
                         calculateProfit();
-                        // 同时触发利润推演表格重算
                         generateProfitSimulation();
                     }, 500);
                 });
             });
             
-            // 手机端输入框事件监听
             const mobileInputs = document.querySelectorAll('.mobile-layout input[type="number"]');
             mobileInputs.forEach(input => {
                 input.addEventListener('input', function() {
                     saveToLocalStorage();
-                    syncFromMobileToDesktop(); // 同步到桌面端
+                    syncFromMobileToDesktop();
                     
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(function() {
                         calculateProfitMobile();
-                        // 同时触发手机端利润推演表格重算
                         generateProfitSimulationMobile();
                     }, 500);
                 });
             });
             
-            // 桌面端利润推演输入框事件监听
             const simulationInputs = [
                 'minReturnRate', 'maxReturnRate', 'minMarketingCost', 
                 'maxMarketingCost'
@@ -2021,7 +1992,7 @@
                 if (element) {
                     element.addEventListener('input', function() {
                         saveSimulationSettings();
-                        syncDataBetweenLayouts(); // 同步到手机端
+                        syncDataBetweenLayouts();
                         
                         clearTimeout(this.simulationTimeout);
                         this.simulationTimeout = setTimeout(generateProfitSimulation, 500);
@@ -2029,7 +2000,6 @@
                 }
             });
             
-            // 手机端利润推演输入框事件监听
             const mobileSimulationInputs = [
                 'minReturnRateMobile', 'maxReturnRateMobile', 'minMarketingCostMobile', 
                 'maxMarketingCostMobile'
@@ -2040,7 +2010,7 @@
                 if (element) {
                     element.addEventListener('input', function() {
                         saveSimulationSettings();
-                        syncFromMobileToDesktop(); // 同步到桌面端
+                        syncFromMobileToDesktop();
                         
                         clearTimeout(this.simulationTimeout);
                         this.simulationTimeout = setTimeout(function() {
@@ -2050,10 +2020,8 @@
                 }
             });
             
-            // 初始化时同步数据
             checkLayoutAndSync();
             
-            // 延迟执行计算，确保DOM完全加载
             setTimeout(function() {
                 if (window.innerWidth >= 1024) {
                     calculateProfit();
@@ -2068,7 +2036,7 @@
             loadSimulationSettings();
         });
 
-        // 手机端利润推演生成函数
+
         function generateProfitSimulationMobile() {
             try {
                 const minReturnRate = parseFloat(document.getElementById('minReturnRateMobile').value) || 5;
@@ -2103,7 +2071,7 @@
             }
         }
 
-        // 手机端获取基础参数
+
         function getBaseParametersMobile() {
             const costPrice = parseFloat(document.getElementById('costPriceMobile').value) || 0;
             const invoiceCost = parseFloat(document.getElementById('invoiceCostMobile').value) || 0;
@@ -2132,7 +2100,7 @@
             };
         }
 
-        // 手机端生成推演表格
+
         function generateSimulationTableMobile(returnRates, marketingCosts, baseParams) {
             const table = document.getElementById('simulationTableMobile');
             const tbody = table.querySelector('tbody');
@@ -2185,10 +2153,9 @@
             });
         }
 
-        // 标价计算弹窗相关函数
+
         function openListPriceModal() {
             document.getElementById('listPriceModal').style.display = 'block';
-            // 初始化弹窗内容
             initListPriceModal();
         }
 
@@ -2196,24 +2163,20 @@
             document.getElementById('listPriceModal').style.display = 'none';
         }
 
-        // 初始化标价计算弹窗
+
         function initListPriceModal() {
-            // 绑定事件
             bindListPriceEvents();
-            // 弹窗打开后自动计算一次结果
             setTimeout(calculateListPrice, 100);
         }
 
-        // 绑定标价计算事件
+
         function bindListPriceEvents() {
-            // 为所有输入框添加实时计算
             const inputs = document.querySelectorAll('#listPriceModal input[type="number"]');
             inputs.forEach(input => {
                 input.removeEventListener('input', handleInputChange);
                 input.addEventListener('input', handleInputChange);
             });
             
-            // 为满减启用勾选框添加事件监听器
             const tierCheckbox = document.getElementById('tierEnabled');
             if (tierCheckbox) {
                 tierCheckbox.removeEventListener('change', toggleTierInputs);
@@ -2221,29 +2184,25 @@
             }
         }
 
-        // 处理输入框变化事件
+
         function handleInputChange() {
-            // 清除之前的定时器
             if (this.inputTimer) {
                 clearTimeout(this.inputTimer);
             }
-            // 设置新的定时器，300ms后执行计算
             this.inputTimer = setTimeout(() => {
                 calculateListPrice();
             }, 300);
         }
 
-        // 标价计算核心逻辑 - 使用精度安全算法
+
         function calculateListPrice() {
             try {
-                // 读取输入值
                 const targetPrice = parseFloat(document.querySelector('.target-price-input').value);
                 const discountRate = parseFloat(document.querySelector('.discount-rate-input').value) / 100;
                 const tierEnabled = document.getElementById('tierEnabled').checked;
                 const tierThreshold = parseFloat(document.querySelector('.tier-threshold').value);
                 const tierOff = parseFloat(document.querySelector('.tier-off').value);
 
-                // 验证输入
                 if (!isFinite(targetPrice) || targetPrice <= 0) {
                     throw new Error('请输入有效的目标到手价');
                 }
@@ -2251,7 +2210,6 @@
                     throw new Error('请输入有效的立减比例（1%-95%）');
                 }
                 
-                // 只有启用满减时才验证满减参数
                 let finalTierThreshold = 0;
                 let finalTierOff = 0;
                 if (tierEnabled) {
@@ -2265,67 +2223,56 @@
                     finalTierOff = tierOff;
                 }
 
-                // 使用精度安全整数口径 + 保守回推
                 const k = 1 - discountRate;
                 const { num: kNum, den: kDen } = decimalToFractionSafe(k);
 
                 const targetCents = yuanToCents(targetPrice);
                 const tiers = tierEnabled && finalTierOff > 0 ? [{ threshold: finalTierThreshold, off: finalTierOff }] : [];
                 
-                // 穷举可能的 off 候选
                 const offCandidates = tierEnabled && finalTierOff > 0 ? [0, finalTierOff] : [0];
                 
                 let best = null;
                 for (const off of offCandidates) {
                     const offCentsFixed = yuanToCents(off);
-                    // 反解理论标价（分）：S* ≈ (P + off) / k = (P+off) * kDen / kNum
                     const exactCents = ((targetCents + offCentsFixed) * kDen) / kNum;
                     
-                    // 只考察上下两侧的"分"候选，再必要时向下微调
                     const seedCandidates = [Math.floor(exactCents + 1e-9), Math.ceil(exactCents - 1e-9)];
-                    const targetMils = targetCents * 10; // 目标到手价(厘)
+                    const targetMils = targetCents * 10;
                     
                     function evaluate(priceCents) {
                         if (!isFinite(priceCents) || priceCents <= 0) return null;
-                        // 计算折后价（厘，不四舍五入，向下取整，防止过冲）
                         const afterDiscountMils = mulCentsByFractionToMils(priceCents, kNum, kDen);
-                        // 触发的满减（分）
                         const { maxOffCents, usedThresholdCents } = calcTierForPriceCents(priceCents, kNum, kDen, tiers);
-                        // 自洽校验：与假设的 off 一致才成立
                         if (Math.abs(maxOffCents - offCentsFixed) > 0) return null;
                         const finalMils = afterDiscountMils - offCentsFixed * 10;
                         return { priceCents, finalMils, usedThresholdCents };
                     }
                     
-                    // 1) 先评估floor/ceil两个种子
                     let localBest = null;
                     for (const c of seedCandidates) {
                         const res = evaluate(c);
                         if (!res) continue;
-                        // 要求：不超过目标价（以厘为准）
                         if (res.finalMils <= targetMils) {
-                            const diff = targetMils - res.finalMils; // 越小越接近
+                            const diff = targetMils - res.finalMils;
                             if (!localBest || diff < localBest.diff || (diff === localBest.diff && c < localBest.priceCents)) {
                                 localBest = { ...res, diff };
                             }
                         }
                     }
                     
-                    // 2) 若两个都"超过"目标或不自洽，则从较小的那一个开始，每次下调1分尝试
                     if (!localBest) {
                         let c = Math.min(...seedCandidates.filter(x => isFinite(x)));
-                        for (let i = 0; i < 6; i++) { // 最多回退6分，足够覆盖边界
+                        for (let i = 0; i < 6; i++) {
                             const res = evaluate(c);
                             if (res && res.finalMils <= targetMils) {
                                 localBest = { ...res, diff: targetMils - res.finalMils };
                                 break;
                             }
-                            c -= 1; // 下调1分
+                            c -= 1;
                         }
                     }
                     
                     if (localBest) {
-                        // 记录最优解
                         if (!best || localBest.diff < best.diff || (localBest.diff === best.diff && localBest.priceCents < best.priceCents)) {
                             best = {
                                 priceCents: localBest.priceCents,
@@ -2344,7 +2291,6 @@
                     const maxOff = centsToYuan(best.offCentsFixed);
                     const usedTier = best.thresholdUsed ? { threshold: centsToYuan(best.thresholdUsed), off: maxOff } : null;
                     
-                    // 渲染结果
                     const resultHtml = generateSingleListPriceResult(targetPrice, discountRate, suggestedPrice, finalPrice, maxOff, usedTier, tierEnabled);
                     document.getElementById('listPriceResult').innerHTML = resultHtml;
                 } else {
@@ -2361,7 +2307,7 @@
             }
         }
 
-        // 生成单档位标价计算结果HTML
+
         function generateSingleListPriceResult(targetPrice, discountRate, suggestedPrice, finalPrice, maxOff, usedTier) {
             const tierInfo = usedTier ? 
                 ` (满¥${usedTier.threshold}减¥${usedTier.off})` : '';
@@ -2394,7 +2340,6 @@
                 </div>
             `;
 
-            // 添加满减规则说明
             if (usedTier) {
                 html += `
                     <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px; border: 1px solid #2196f3;">
@@ -2407,7 +2352,7 @@
             return html;
         }
 
-        // 点击弹窗外部关闭弹窗
+
         window.onclick = function(event) {
             const modal = document.getElementById('listPriceModal');
             if (event.target === modal) {
@@ -2416,12 +2361,12 @@
         }
     </script>
 
-    <!-- 版权声明 -->
+
     <footer style="text-align: center; padding: 20px; color: #495057; font-size: 1rem; border-top: 1px solid #e9ecef; margin-top: 40px; background: #f8f9fa;">
         <p style="font-weight: 500;">© 已根据电商税法合规计算，数据仅供参考。如有算法错误联系微信 jayyuuuuuu 反馈</p>
     </footer>
 
-    <!-- 标价计算弹窗 -->
+
     <div id="listPriceModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -2430,7 +2375,7 @@
             </div>
             
             <div class="modal-body">
-                <!-- 目标到手价设置 -->
+
                 <div class="config-section">
                     <h3>🎯 目标到手价</h3>
                     <div class="target-price-container">
@@ -2441,18 +2386,18 @@
                     <p class="hint">买家最终支付的实付价格</p>
                 </div>
 
-                <!-- 优惠设置 -->
+
                 <div class="config-section">
                     <h3>🏷️ 优惠设置</h3>
                     
                     <div class="settings-grid">
-                        <!-- 立减设置 -->
+
                         <div class="setting-item">
                             <label class="setting-label">立减比例</label>
                             <input type="number" class="setting-input discount-rate-input" value="10" step="1" min="0" max="95" placeholder="10">
                         </div>
 
-                        <!-- 满减设置 -->
+
                         <div class="setting-item">
                             <div class="tier-header">
                                 <input type="checkbox" class="tier-checkbox" id="tierEnabled">
@@ -2468,7 +2413,7 @@
                     </div>
                 </div>
 
-                <!-- 计算结果 -->
+
                 <div class="result-section">
                     <h3>📊 计算结果</h3>
                     <div id="listPriceResult" class="result-content">
@@ -2483,7 +2428,7 @@
         </div>
     </div>
 
-    <!-- 标价计算按钮 -->
+
     <div class="floating-button" onclick="openListPriceModal()">
         🏷️ 标价计算
     </div>
