@@ -1060,6 +1060,112 @@
                 padding: 12px 16px;
                 font-size: 0.9rem;
             }
+
+            /* Mobile optimization for calculation results */
+            .mobile-result-container {
+                background: white;
+                border-radius: 12px;
+                padding: 16px;
+                margin: 12px 0;
+                border: 1px solid #dee2e6;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+
+            .mobile-result-header {
+                text-align: center;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 2px solid #667eea;
+            }
+
+            .mobile-result-title {
+                margin: 0 0 8px 0;
+                color: #495057;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+
+            .mobile-badges {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .mobile-badge {
+                background: #e3f2fd;
+                color: #495057;
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+
+            .mobile-price-section {
+                margin-bottom: 16px;
+            }
+
+            .mobile-price-card {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                border-radius: 12px;
+                padding: 16px;
+                text-align: center;
+                margin-bottom: 12px;
+                border: 1px solid #dee2e6;
+            }
+
+            .mobile-price-label {
+                color: #6c757d;
+                font-size: 0.85rem;
+                font-weight: 500;
+                margin-bottom: 6px;
+            }
+
+            .mobile-price-value {
+                font-size: 1.8rem;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+
+            .mobile-price-suggested {
+                background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+                border-color: #28a745;
+            }
+
+            .mobile-price-suggested .mobile-price-value {
+                color: #28a745;
+            }
+
+            .mobile-price-actual {
+                background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+                border-color: #ffc107;
+            }
+
+            .mobile-price-actual .mobile-price-value {
+                color: #ff6b35;
+            }
+
+            .mobile-tier-info {
+                background: #e3f2fd;
+                border: 1px solid #2196f3;
+                border-radius: 10px;
+                padding: 12px;
+                margin-top: 12px;
+            }
+
+            .mobile-tier-title {
+                color: #1976d2;
+                font-size: 0.9rem;
+                font-weight: 600;
+                margin: 0 0 6px 0;
+            }
+
+            .mobile-tier-text {
+                color: #1565c0;
+                font-size: 0.85rem;
+                font-weight: 500;
+                margin: 0;
+            }
         }
 
         @media (min-width: 1200px) {
@@ -2195,6 +2301,34 @@
 
 
         function calculateListPrice() {
+            // Store last result for re-rendering on resize
+            let lastCalculationResult = null;
+
+            // Re-render result when window size changes
+            function handleResultResize() {
+                if (lastCalculationResult) {
+                    const resultHtml = generateSingleListPriceResult(
+                        lastCalculationResult.targetPrice,
+                        lastCalculationResult.discountRate,
+                        lastCalculationResult.suggestedPrice,
+                        lastCalculationResult.finalPrice,
+                        lastCalculationResult.maxOff,
+                        lastCalculationResult.usedTier,
+                        lastCalculationResult.tierEnabled
+                    );
+                    document.getElementById('listPriceResult').innerHTML = resultHtml;
+                }
+            }
+
+            // Add resize listener for result re-rendering (only once)
+            if (!window.resultResizeListenerAdded) {
+                let resizeTimeout;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(handleResultResize, 150);
+                });
+                window.resultResizeListenerAdded = true;
+            }
             try {
                 const targetPrice = parseFloat(document.querySelector('.target-price-input').value);
                 const discountRate = parseFloat(document.querySelector('.discount-rate-input').value) / 100;
@@ -2290,13 +2424,26 @@
                     const maxOff = centsToYuan(best.offCentsFixed);
                     const usedTier = best.thresholdUsed ? { threshold: centsToYuan(best.thresholdUsed), off: maxOff } : null;
                     
+                    // Store result for re-rendering
+                    lastCalculationResult = {
+                        targetPrice,
+                        discountRate,
+                        suggestedPrice,
+                        finalPrice,
+                        maxOff,
+                        usedTier,
+                        tierEnabled
+                    };
+                    
                     const resultHtml = generateSingleListPriceResult(targetPrice, discountRate, suggestedPrice, finalPrice, maxOff, usedTier, tierEnabled);
                     document.getElementById('listPriceResult').innerHTML = resultHtml;
                 } else {
+                    lastCalculationResult = null;
                     throw new Error('无法找到自洽解，请检查输入参数');
                 }
                 
             } catch (error) {
+                lastCalculationResult = null;
                 document.getElementById('listPriceResult').innerHTML = `
                     <div class="empty-state">
                         <h4>❌ 计算错误</h4>
@@ -2311,44 +2458,90 @@
             const tierInfo = usedTier ? 
                 ` (满¥${usedTier.threshold}减¥${usedTier.off})` : '';
             
-            let html = `
-                <div class="result-item" style="margin-bottom: 0; padding: 15px; background: white; border-radius: 8px; border: 1px solid #dee2e6;">
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <h4 style="margin: 0 0 12px 0; color: #495057; border-bottom: 2px solid #667eea; padding-bottom: 6px; font-size: 1rem;">
-                            🎯 目标到手价 ¥${targetPrice.toFixed(2)}
-                        </h4>
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
-                            <span style="font-weight: 600; color: #495057; background: #e3f2fd; padding: 5px 10px; border-radius: 15px; font-size: 0.85rem;">
-                                ${(discountRate * 100).toFixed(0)}%立减
-                            </span>
-                            <span style="font-size: 0.85rem; color: #6c757d; background: #f8f9fa; padding: 5px 10px; border-radius: 15px;">
-                                ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
-                            </span>
+            // Check if mobile layout
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Mobile optimized layout
+                let html = `
+                    <div class="mobile-result-container">
+                        <div class="mobile-result-header">
+                            <h4 class="mobile-result-title">
+                                🎯 目标到手价 ¥${targetPrice.toFixed(2)}
+                            </h4>
+                            <div class="mobile-badges">
+                                <span class="mobile-badge">
+                                    ${(discountRate * 100).toFixed(0)}%立减
+                                </span>
+                                <span class="mobile-badge">
+                                    ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div style="text-align: center; background: #e8f5e8; padding: 12px; border-radius: 8px; border: 1px solid #c3e6cb;">
-                            <div style="font-size: 0.8rem; color: #155724; margin-bottom: 5px; font-weight: 600;">建议标价</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: #28a745;">¥${suggestedPrice.toFixed(2)}</div>
+                        <div class="mobile-price-section">
+                            <div class="mobile-price-card mobile-price-suggested">
+                                <div class="mobile-price-label">建议标价</div>
+                                <div class="mobile-price-value">¥${suggestedPrice.toFixed(2)}</div>
+                            </div>
+                            <div class="mobile-price-card mobile-price-actual">
+                                <div class="mobile-price-label">实际到手价</div>
+                                <div class="mobile-price-value">¥${finalPrice.toFixed(2)}</div>
+                            </div>
                         </div>
-                        <div style="text-align: center; background: #fff3cd; padding: 12px; border-radius: 8px; border: 1px solid #ffeaa7;">
-                            <div style="font-size: 0.8rem; color: #856404; margin-bottom: 5px; font-weight: 600;">实际到手价</div>
-                            <div style="font-size: 1.5rem; font-weight: bold; color: #ff6b35;">¥${finalPrice.toFixed(2)}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            if (usedTier) {
-                html += `
-                    <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px; border: 1px solid #2196f3;">
-                        <h4 style="margin: 0 0 6px 0; color: #1976d2; font-size: 0.9rem;">📋 满减规则</h4>
-                        <p style="margin: 0; color: #1565c0; font-weight: 500; font-size: 0.85rem;">满¥${usedTier.threshold}减¥${usedTier.off}</p>
                     </div>
                 `;
-            }
 
-            return html;
+                if (usedTier) {
+                    html += `
+                        <div class="mobile-tier-info">
+                            <h4 class="mobile-tier-title">📋 满减规则</h4>
+                            <p class="mobile-tier-text">满¥${usedTier.threshold}减¥${usedTier.off}</p>
+                        </div>
+                    `;
+                }
+
+                return html;
+            } else {
+                // Desktop layout (original)
+                let html = `
+                    <div class="result-item" style="margin-bottom: 0; padding: 15px; background: white; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <h4 style="margin: 0 0 12px 0; color: #495057; border-bottom: 2px solid #667eea; padding-bottom: 6px; font-size: 1rem;">
+                                🎯 目标到手价 ¥${targetPrice.toFixed(2)}
+                            </h4>
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
+                                <span style="font-weight: 600; color: #495057; background: #e3f2fd; padding: 5px 10px; border-radius: 15px; font-size: 0.85rem;">
+                                    ${(discountRate * 100).toFixed(0)}%立减
+                                </span>
+                                <span style="font-size: 0.85rem; color: #6c757d; background: #f8f9fa; padding: 5px 10px; border-radius: 15px;">
+                                    ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
+                                </span>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="text-align: center; background: #e8f5e8; padding: 12px; border-radius: 8px; border: 1px solid #c3e6cb;">
+                                <div style="font-size: 0.8rem; color: #155724; margin-bottom: 5px; font-weight: 600;">建议标价</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #28a745;">¥${suggestedPrice.toFixed(2)}</div>
+                            </div>
+                            <div style="text-align: center; background: #fff3cd; padding: 12px; border-radius: 8px; border: 1px solid #ffeaa7;">
+                                <div style="font-size: 0.8rem; color: #856404; margin-bottom: 5px; font-weight: 600;">实际到手价</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #ff6b35;">¥${finalPrice.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (usedTier) {
+                    html += `
+                        <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px; border: 1px solid #2196f3;">
+                            <h4 style="margin: 0 0 6px 0; color: #1976d2; font-size: 0.9rem;">📋 满减规则</h4>
+                            <p style="margin: 0; color: #1565c0; font-weight: 500; font-size: 0.85rem;">满¥${usedTier.threshold}减¥${usedTier.off}</p>
+                        </div>
+                    `;
+                }
+
+                return html;
+            }
         }
 
 
