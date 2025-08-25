@@ -60,53 +60,25 @@
             border-radius: 1px;
         }
 
-
-        .mobile-layout {
-            display: block;
-        }
-
-
-        @media (min-width: 1024px) {
-            .desktop-layout {
-                display: flex;
-            }
-            
-            .mobile-layout {
-                display: none;
-            }
-            
-            .content {
-                padding: 30px;
-            }
-            
-            .right-panel .content {
-                padding: 30px 0 30px 0;
-            }
-
-            /* 电脑端优化表格显示 - 移除固定高度限制，让表格完整显示 */
-            .simulation-table-container {
-                max-height: none; /* 移除固定高度限制 */
-                overflow: visible; /* 移除滚动条 */
-            }
-
-            .simulation-table th {
-                position: static; /* 移除粘性定位，因为不再需要滚动 */
-                z-index: auto;
-            }
-
-            /* 确保表格在电脑端有足够的显示空间 */
-            .profit-simulation-results {
-                min-height: auto;
-            }
-        }
-
         @media (max-width: 1023px) {
             .desktop-layout {
-                display: none;
+                flex-direction: column;
+                gap: 20px;
+                padding: 0 15px;
             }
             
-            .mobile-layout {
-                display: block;
+            .right-panel {
+                border-left: none;
+                border-top: 2px solid #e9ecef;
+                padding-left: 0;
+                padding-top: 20px;
+            }
+            
+            .right-panel::before {
+                left: 0;
+                top: -1px;
+                width: 100%;
+                height: 2px;
             }
             
             .container {
@@ -114,7 +86,7 @@
             }
             
             .content {
-                padding: 40px;
+                padding: 20px;
             }
         }
 
@@ -162,7 +134,6 @@
                 min-height: auto;
             }
 
-
             .desktop-layout .simulation-table {
                 font-size: 0.9rem;
                 width: 100%;
@@ -177,18 +148,15 @@
                 text-align: center;
             }
 
-
             .desktop-layout .right-panel .content {
                 padding: 30px 0 30px 0;
                 height: fit-content;
             }
 
-
             .desktop-layout .right-panel {
                 height: auto;
                 min-height: 600px;
             }
-
 
             .desktop-layout .simulation-table-container {
                 margin-bottom: 0;
@@ -197,7 +165,6 @@
                 background: white;
             }
 
-
             .desktop-layout .profit-simulation-results {
                 height: auto;
                 min-height: 0;
@@ -205,23 +172,7 @@
             }
         }
 
-        @media (max-width: 1023px) {
-            .desktop-layout {
-                display: none;
-            }
-            
-            .mobile-layout {
-                display: block;
-            }
-            
-            .container {
-                max-width: 800px;
-            }
-            
-            .content {
-                padding: 40px;
-            }
-        }
+
 
 
 
@@ -329,6 +280,61 @@
             .input-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .range-inputs {
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .range-inputs input {
+                width: 80px;
+            }
+
+            .simulation-table-container {
+                font-size: 0.8rem;
+            }
+
+            .simulation-table th,
+            .simulation-table td {
+                padding: 8px 4px;
+                font-size: 0.8rem;
+            }
+
+            .profit-simulation-controls {
+                padding: 20px;
+            }
+
+            .profit-simulation-results {
+                padding: 20px;
+            }
+
+            /* 手机端：两个设置项分上下两行显示 */
+            .control-groups-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .control-group {
+                margin-bottom: 0;
             }
         }
 
@@ -607,70 +613,6 @@
             background: #fff8e1;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 15px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .input-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-
-            .range-inputs {
-                flex-direction: row;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .range-inputs input {
-                width: 80px;
-            }
-
-            .simulation-table-container {
-                font-size: 0.8rem;
-            }
-
-            .simulation-table th,
-            .simulation-table td {
-                padding: 8px 4px;
-                font-size: 0.8rem;
-            }
-
-            .profit-simulation-controls {
-                padding: 20px;
-            }
-
-            .profit-simulation-results {
-                padding: 20px;
-            }
-
-            /* 手机端：两个设置项分上下两行显示 */
-            .control-groups-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .control-group {
-                margin-bottom: 0;
-            }
-        }
-
 
         .modal {
             position: fixed;
@@ -690,9 +632,10 @@
         .modal-content {
             background-color: white;
             border-radius: 15px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 80vh;
+            width: 666px;
+            height: 100vh;
+            max-width: none;
+            max-height: none;
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             display: flex;
@@ -703,7 +646,7 @@
         .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 20px;
+            padding: 20px 30px;
             border-radius: 15px 15px 0 0;
             display: flex;
             justify-content: space-between;
@@ -713,16 +656,16 @@
 
         .modal-header h2 {
             margin: 0;
-            font-size: 1.3rem;
+            font-size: 1.8rem;
         }
 
         .close {
             color: white;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             cursor: pointer;
             line-height: 1;
-            padding: 5px;
+            padding: 8px;
             border-radius: 50%;
             transition: background-color 0.2s ease;
         }
@@ -732,11 +675,11 @@
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 30px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .config-section {
@@ -995,12 +938,12 @@
             
             .modal-content {
                 width: 100%;
-                max-height: 85vh;
+                height: 100vh;
             }
 
             .modal-body {
-                padding: 15px;
-                gap: 12px;
+                padding: 20px;
+                gap: 15px;
             }
 
             .config-section h3 {
@@ -1060,122 +1003,17 @@
                 padding: 12px 16px;
                 font-size: 0.9rem;
             }
-
-            /* Mobile optimization for calculation results */
-            .mobile-result-container {
-                background: white;
-                border-radius: 12px;
-                padding: 16px;
-                margin: 12px 0;
-                border: 1px solid #dee2e6;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            }
-
-            .mobile-result-header {
-                text-align: center;
-                margin-bottom: 16px;
-                padding-bottom: 12px;
-                border-bottom: 2px solid #667eea;
-            }
-
-            .mobile-result-title {
-                margin: 0 0 8px 0;
-                color: #495057;
-                font-size: 1.1rem;
-                font-weight: 600;
-            }
-
-            .mobile-badges {
-                display: flex;
-                justify-content: center;
-                gap: 8px;
-                flex-wrap: wrap;
-            }
-
-            .mobile-badge {
-                background: #e3f2fd;
-                color: #495057;
-                padding: 4px 10px;
-                border-radius: 12px;
-                font-size: 0.8rem;
-                font-weight: 500;
-            }
-
-            .mobile-price-section {
-                margin-bottom: 16px;
-            }
-
-            .mobile-price-card {
-                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                border-radius: 12px;
-                padding: 16px;
-                text-align: center;
-                margin-bottom: 12px;
-                border: 1px solid #dee2e6;
-            }
-
-            .mobile-price-label {
-                color: #6c757d;
-                font-size: 0.85rem;
-                font-weight: 500;
-                margin-bottom: 6px;
-            }
-
-            .mobile-price-value {
-                font-size: 1.8rem;
-                font-weight: bold;
-                margin-bottom: 8px;
-            }
-
-            .mobile-price-suggested {
-                background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
-                border-color: #28a745;
-            }
-
-            .mobile-price-suggested .mobile-price-value {
-                color: #28a745;
-            }
-
-            .mobile-price-actual {
-                background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-                border-color: #ffc107;
-            }
-
-            .mobile-price-actual .mobile-price-value {
-                color: #ff6b35;
-            }
-
-            .mobile-tier-info {
-                background: #e3f2fd;
-                border: 1px solid #2196f3;
-                border-radius: 10px;
-                padding: 12px;
-                margin-top: 12px;
-            }
-
-            .mobile-tier-title {
-                color: #1976d2;
-                font-size: 0.9rem;
-                font-weight: 600;
-                margin: 0 0 6px 0;
-            }
-
-            .mobile-tier-text {
-                color: #1565c0;
-                font-size: 0.85rem;
-                font-weight: 500;
-                margin: 0;
-            }
         }
 
         @media (min-width: 1200px) {
             .modal-content {
-                max-width: 600px;
+                width: 666px;
+                height: 100vh;
             }
             
             .modal-body {
-                padding: 25px;
-                gap: 20px;
+                padding: 40px;
+                gap: 25px;
             }
         }
     </style>
@@ -1191,10 +1029,8 @@
 
 
         <div class="desktop-layout">
-
             <div class="left-panel">
                 <div class="content">
-
                     <div class="section">
                         <h2>核心财务指标</h2>
                         <div class="input-grid">
@@ -1224,7 +1060,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class="section">
                         <h2>费用设置</h2>
@@ -1264,9 +1099,6 @@
                         </div>
                     </div>
 
-
-
-
                     <div class="results" id="results" style="display: none;">
                         <h2 style="margin-bottom: 20px;">价格指标一览</h2>
                         <div class="metrics-grid">
@@ -1282,7 +1114,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="right-panel">
                 <div class="content">
@@ -1328,135 +1159,6 @@
         </div>
 
 
-        <div class="mobile-layout">
-            <div class="content">
-
-                <div class="section">
-                    <h2>核心财务指标</h2>
-                    <div class="input-grid">
-                        <div class="input-group">
-                            <label>进货价</label>
-                            <input type="number" id="costPriceMobile" placeholder="请输入商品进价" step="0.01" value="58">
-                        </div>
-                        <div class="input-group">
-                            <label>开票成本（%）</label>
-                            <input type="number" id="invoiceCostMobile" placeholder="开票成本比例" step="0.1" value="6">
-                        </div>
-                        <div class="input-group">
-                            <label>售价（含税）</label>
-                            <input type="number" id="sellingPriceMobile" placeholder="请输入商品售价" step="0.01" value="109">
-                        </div>
-                        <div class="input-group">
-                            <label>你的利润</label>
-                            <input type="text" id="profitMobile" readonly placeholder="自动计算">
-                        </div>
-                        <div class="input-group">
-                            <label>保本ROI</label>
-                            <input type="text" id="breakevenROIMobile" readonly placeholder="自动计算">
-                        </div>
-                        <div class="input-group">
-                            <label>保本广告占比</label>
-                            <input type="text" id="breakevenAdRateMobile" readonly placeholder="自动计算">
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="section">
-                    <h2>费用设置</h2>
-                    <div class="input-grid">
-                        <div class="input-group">
-                            <label>付费占比（%）</label>
-                            <input type="number" id="marketingCostMobile" placeholder="请输入预期广告占比占比" step="0.1" value="20">
-                        </div>
-                        <div class="input-group">
-                            <label>退货率（%）</label>
-                            <input type="number" id="riskRateMobile" placeholder="请输入退货率" step="0.1" value="20">
-                        </div>
-                        <div class="input-group">
-                            <label>进项税率（%）</label>
-                            <input type="number" id="inputTaxRateMobile" placeholder="进项税率" step="0.1" value="13">
-                        </div>
-                        <div class="input-group">
-                            <label>销项税率（%）</label>
-                            <input type="number" id="outputTaxRateMobile" placeholder="销项税率" step="0.1" value="13">
-                        </div>
-                        <div class="input-group">
-                            <label>平台佣金（%）</label>
-                            <input type="number" id="platformFeeMobile" placeholder="请输入平台佣金" step="0.1" value="5.5">
-                        </div>
-                        <div class="input-group">
-                            <label>每单快递费</label>
-                            <input type="number" id="logisticsCostMobile" placeholder="请输入物流费用" step="0.01" value="2.8">
-                        </div>
-                        <div class="input-group">
-                            <label>运费险</label>
-                            <input type="number" id="shippingInsuranceMobile" placeholder="请输入运费险费用" step="0.01" value="1.5">
-                        </div>
-                        <div class="input-group">
-                            <label>其它成本</label>
-                            <input type="number" id="otherCostMobile" placeholder="请输入其他费用" step="0.01" value="2.5">
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="section">
-                    <h2>利润推演分析</h2>
-                    <p style="color: #6c757d; margin-bottom: 20px; line-height: 1.6;">
-                        分析不同退货率和付费占比组合下的利润率情况，帮助您找到最优的运营策略组合。
-                    </p>
-                    
-                    <div class="profit-simulation-controls">
-                        <div class="control-groups-container">
-                            <div class="control-group">
-                                <label>退货率范围（%）</label>
-                                <div class="range-inputs">
-                                    <input type="number" id="minReturnRateMobile" placeholder="最小值" step="1" value="5" min="0" max="50">
-                                    <span>至</span>
-                                    <input type="number" id="maxReturnRateMobile" placeholder="最大值" step="1" value="35" min="0" max="50">
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label>付费占比范围（%）</label>
-                                <div class="range-inputs">
-                                    <input type="number" id="minMarketingCostMobile" placeholder="最小值" step="1" value="10" min="0" max="100">
-                                    <span>至</span>
-                                    <input type="number" id="maxMarketingCostMobile" placeholder="最大值" step="1" value="40" min="0" max="100">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="profit-simulation-results" id="profitSimulationResultsMobile">
-                        <h3 style="margin-bottom: 20px; color: #495057;">利润推演结果</h3>
-                        <div class="simulation-table-container">
-                            <table class="simulation-table" id="simulationTableMobile">
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-                <div class="results" id="resultsMobile" style="display: none;">
-                    <h2 style="margin-bottom: 20px;">价格指标一览</h2>
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-value" id="markupRatioMobile">0倍</div>
-                            <div class="metric-label">加价倍率</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value" id="grossMarginMobile">0%</div>
-                            <div class="metric-label">毛利润</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     <script>
         function yuanToCents(x) {
@@ -1878,182 +1580,18 @@
             }
         }
 
-        function calculateProfitMobile() {
-            try {
-                const costPrice = parseFloat(document.getElementById('costPriceMobile').value) || 0;
-                const invoiceCost = parseFloat(document.getElementById('invoiceCostMobile').value) || 0;
-                const sellingPrice = parseFloat(document.getElementById('sellingPriceMobile').value) || 0;
-                const marketingCost = parseFloat(document.getElementById('marketingCostMobile').value) || 0;
-                const riskRate = parseFloat(document.getElementById('riskRateMobile').value) || 0;
-                const inputTaxRate = parseFloat(document.getElementById('inputTaxRateMobile').value) || 0;
-                const outputTaxRate = parseFloat(document.getElementById('outputTaxRateMobile').value) || 0;
-                const platformFee = parseFloat(document.getElementById('platformFeeMobile').value) || 0;
-                const logisticsCost = parseFloat(document.getElementById('logisticsCostMobile').value) || 0;
-                const shippingInsurance = parseFloat(document.getElementById('shippingInsuranceMobile').value) || 0;
-                const otherCost = parseFloat(document.getElementById('otherCostMobile').value) || 0;
-
-                if (costPrice <= 0 || sellingPrice <= 0) {
-                    alert('请输入有效的进货价和售价！');
-                    return;
-                }
-
-                const actualInvoiceCost = costPrice * (invoiceCost / 100);
-                const totalPurchaseCost = costPrice + actualInvoiceCost;
-                
-                const purchaseVAT = costPrice * (inputTaxRate / 100);
-
-                const baseCost = costPrice + actualInvoiceCost;
-                
-                const markupRatio = (sellingPrice / baseCost).toFixed(2);
-                
-                const grossMargin = (((sellingPrice - baseCost) / sellingPrice) * 100).toFixed(2);
-
-                const effectiveSalesRate = 1 - (riskRate / 100);
-
-                const platformFeeAmount = sellingPrice * (platformFee / 100);
-                const v = 0.06;
-                const adCost = sellingPrice * (marketingCost / 100);
-                const adCostEffective = adCost / effectiveSalesRate;
-                
-                const adVAT = serviceVATFromTaxInclusive(adCostEffective, v);
-
-                const logisticsCostEffective = logisticsCost / effectiveSalesRate;
-                const shippingInsuranceEffective = shippingInsurance / effectiveSalesRate;
-                const otherCostEffective = otherCost / effectiveSalesRate;
-
-                const netPrice = sellingPrice / (1 + outputTaxRate / 100);
-                const outputVAT = netPrice * (outputTaxRate / 100);
-
-                const totalVATDeduction = purchaseVAT + adVAT + serviceVATFromTaxInclusive(platformFeeAmount, v);
-                const actualVAT = outputVAT - totalVATDeduction;
-
-                const totalCost = totalPurchaseCost + platformFeeAmount + adCostEffective + 
-                                logisticsCostEffective + shippingInsuranceEffective + otherCostEffective + actualVAT;
-
-                const profit = sellingPrice - totalCost;
-                const profitRate = (profit / sellingPrice * 100).toFixed(2);
-
-                const effectiveCost = costPrice + actualInvoiceCost;
-                const fixedCosts = (logisticsCost + shippingInsurance + otherCost) / effectiveSalesRate;
-                const t = outputTaxRate / 100;
-                const taxFactorOnFinal = t / (1 + t);
-
-                const B = effectiveCost - purchaseVAT + fixedCosts;
-                
-                const platformRateDecimal = platformFee / 100;
-                const D = 1 - platformRateDecimal - taxFactorOnFinal + (v / (1 + v)) * platformRateDecimal;
-
-                const term = D - (B / sellingPrice);
-                const breakevenAdRate = (effectiveSalesRate / (1 - v)) * term;
-
-                let breakevenROI;
-                if (breakevenAdRate <= 0) {
-                    breakevenROI = '∞';
-                } else if (!isFinite(breakevenAdRate) || breakevenAdRate >= 1) {
-                    breakevenROI = '-';
-                } else {
-                    breakevenROI = (effectiveSalesRate / breakevenAdRate).toFixed(2);
-                }
-
-                document.getElementById('profitMobile').value = `¥${profit.toFixed(2)}`;
-                
-                const profitInput = document.getElementById('profitMobile');
-                profitInput.classList.remove('profit-positive', 'profit-negative', 'profit-zero');
-                if (profit > 0) {
-                    profitInput.classList.add('profit-positive');
-                } else if (profit < 0) {
-                    profitInput.classList.add('profit-negative');
-                } else {
-                    profitInput.classList.add('profit-zero');
-                }
 
 
-                document.getElementById('markupRatioMobile').textContent = `${markupRatio}倍`;
-                document.getElementById('grossMarginMobile').textContent = `${grossMargin}%`;
 
-                
-                document.getElementById('breakevenROIMobile').value = breakevenROI;
-                
-                let breakevenAdRateDisplay;
-                if (breakevenAdRate <= 0) {
-                    breakevenAdRateDisplay = '0%';
-                } else if (!isFinite(breakevenAdRate) || breakevenAdRate >= 1) {
-                    breakevenAdRateDisplay = '-';
-                } else {
-                    breakevenAdRateDisplay = (breakevenAdRate * 100).toFixed(2) + '%';
-                }
-                document.getElementById('breakevenAdRateMobile').value = breakevenAdRateDisplay;
 
-                document.getElementById('resultsMobile').style.display = 'block';
 
-            } catch (error) {
-                console.error('计算错误:', error);
-                alert('计算过程中发生错误，请检查输入数据！');
-            }
-        }
 
-        function syncDataBetweenLayouts() {
-            const desktopInputs = [
-                'costPrice', 'invoiceCost', 'sellingPrice', 'marketingCost', 'riskRate',
-                'inputTaxRate', 'outputTaxRate', 'platformFee', 'logisticsCost', 
-                'shippingInsurance', 'otherCost', 'minReturnRate', 'maxReturnRate',
-                'minMarketingCost', 'maxMarketingCost'
-            ];
-            
-            const mobileInputs = [
-                'costPriceMobile', 'invoiceCostMobile', 'sellingPriceMobile', 'marketingCostMobile', 'riskRateMobile',
-                'inputTaxRateMobile', 'outputTaxRateMobile', 'platformFeeMobile', 'logisticsCostMobile', 
-                'shippingInsuranceMobile', 'otherCostMobile', 'minReturnRateMobile', 'maxReturnRateMobile',
-                'minMarketingCostMobile', 'maxMarketingCostMobile'
-            ];
 
-            desktopInputs.forEach((desktopId, index) => {
-                const desktopElement = document.getElementById(desktopId);
-                const mobileElement = document.getElementById(mobileInputs[index]);
-                if (desktopElement && mobileElement) {
-                    mobileElement.value = desktopElement.value;
-                }
-            });
-        }
 
-        function syncFromMobileToDesktop() {
-            const desktopInputs = [
-                'costPrice', 'invoiceCost', 'sellingPrice', 'marketingCost', 'riskRate',
-                'inputTaxRate', 'outputTaxRate', 'platformFee', 'logisticsCost', 
-                'shippingInsurance', 'otherCost', 'minReturnRate', 'maxReturnRate',
-                'minMarketingCost', 'maxMarketingCost'
-            ];
-            
-            const mobileInputs = [
-                'costPriceMobile', 'invoiceCostMobile', 'sellingPriceMobile', 'marketingCostMobile', 'riskRateMobile',
-                'inputTaxRateMobile', 'outputTaxRateMobile', 'platformFeeMobile', 'logisticsCostMobile', 
-                'shippingInsuranceMobile', 'otherCostMobile', 'minReturnRateMobile', 'maxReturnRateMobile',
-                'minMarketingCostMobile', 'maxMarketingCostMobile'
-            ];
 
-            mobileInputs.forEach((mobileId, index) => {
-                const mobileElement = document.getElementById(mobileId);
-                const desktopElement = document.getElementById(desktopInputs[index]);
-                if (mobileElement && desktopElement) {
-                    desktopElement.value = mobileElement.value;
-                }
-            });
-        }
 
-        function checkLayoutAndSync() {
-            const isDesktop = window.innerWidth >= 1024;
-            
-            if (isDesktop) {
-                syncDataBetweenLayouts();
-            } else {
-                syncFromMobileToDesktop();
-            }
-        }
 
-        window.addEventListener('resize', function() {
-            clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(checkLayoutAndSync, 100);
-        });
+
 
         document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
@@ -2063,7 +1601,6 @@
             desktopInputs.forEach(input => {
                 input.addEventListener('input', function() {
                     saveToLocalStorage();
-                    syncDataBetweenLayouts();
                     
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(function() {
@@ -2073,19 +1610,7 @@
                 });
             });
             
-            const mobileInputs = document.querySelectorAll('.mobile-layout input[type="number"]');
-            mobileInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    saveToLocalStorage();
-                    syncFromMobileToDesktop();
-                    
-                    clearTimeout(this.timeout);
-                    this.timeout = setTimeout(function() {
-                        calculateProfitMobile();
-                        generateProfitSimulationMobile();
-                    }, 500);
-                });
-            });
+
             
             const simulationInputs = [
                 'minReturnRate', 'maxReturnRate', 'minMarketingCost', 
@@ -2097,7 +1622,6 @@
                 if (element) {
                     element.addEventListener('input', function() {
                         saveSimulationSettings();
-                        syncDataBetweenLayouts();
                         
                         clearTimeout(this.simulationTimeout);
                         this.simulationTimeout = setTimeout(generateProfitSimulation, 500);
@@ -2105,36 +1629,11 @@
                 }
             });
             
-            const mobileSimulationInputs = [
-                'minReturnRateMobile', 'maxReturnRateMobile', 'minMarketingCostMobile', 
-                'maxMarketingCostMobile'
-            ];
-            
-            mobileSimulationInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', function() {
-                        saveSimulationSettings();
-                        syncFromMobileToDesktop();
-                        
-                        clearTimeout(this.simulationTimeout);
-                        this.simulationTimeout = setTimeout(function() {
-                            generateProfitSimulationMobile();
-                        }, 500);
-                    });
-                }
-            });
-            
-            checkLayoutAndSync();
+
             
             setTimeout(function() {
-                if (window.innerWidth >= 1024) {
-                    calculateProfit();
-                    generateProfitSimulation();
-                } else {
-                    calculateProfitMobile();
-                    generateProfitSimulationMobile();
-                }
+                calculateProfit();
+                generateProfitSimulation();
             }, 200);
             
 
@@ -2142,125 +1641,18 @@
         });
 
 
-        function generateProfitSimulationMobile() {
-            try {
-                const minReturnRate = parseFloat(document.getElementById('minReturnRateMobile').value) || 5;
-                const maxReturnRate = parseFloat(document.getElementById('maxReturnRateMobile').value) || 30;
-                const minMarketingCost = parseFloat(document.getElementById('minMarketingCostMobile').value) || 10;
-                const maxMarketingCost = parseFloat(document.getElementById('maxMarketingCostMobile').value) || 40;
-                const returnRateStep = 3;
-                const marketingStep = 5;
-
-                if (minReturnRate >= maxReturnRate || minMarketingCost >= maxMarketingCost) {
-                    return;
-                }
-
-                const baseParams = getBaseParametersMobile();
-                if (!baseParams) return;
-
-                const returnRates = [];
-                const marketingCosts = [];
-                
-                for (let rate = minReturnRate; rate <= maxReturnRate; rate += returnRateStep) {
-                    returnRates.push(rate);
-                }
-                
-                for (let cost = minMarketingCost; cost <= maxMarketingCost; cost += marketingStep) {
-                    marketingCosts.push(cost);
-                }
-
-                generateSimulationTableMobile(returnRates, marketingCosts, baseParams);
-
-            } catch (error) {
-                console.error('手机端利润推演生成错误:', error);
-            }
-        }
 
 
-        function getBaseParametersMobile() {
-            const costPrice = parseFloat(document.getElementById('costPriceMobile').value) || 0;
-            const invoiceCost = parseFloat(document.getElementById('invoiceCostMobile').value) || 0;
-            const sellingPrice = parseFloat(document.getElementById('sellingPriceMobile').value) || 0;
-            const inputTaxRate = parseFloat(document.getElementById('inputTaxRateMobile').value) || 0;
-            const outputTaxRate = parseFloat(document.getElementById('outputTaxRateMobile').value) || 0;
-            const platformFee = parseFloat(document.getElementById('platformFeeMobile').value) || 0;
-            const logisticsCost = parseFloat(document.getElementById('logisticsCostMobile').value) || 0;
-            const shippingInsurance = parseFloat(document.getElementById('shippingInsuranceMobile').value) || 0;
-            const otherCost = parseFloat(document.getElementById('otherCostMobile').value) || 0;
-
-            if (costPrice <= 0 || sellingPrice <= 0) {
-                return null;
-            }
-
-            return {
-                costPrice,
-                invoiceCost,
-                sellingPrice,
-                inputTaxRate,
-                outputTaxRate,
-                platformFee,
-                logisticsCost,
-                shippingInsurance,
-                otherCost
-            };
-        }
 
 
-        function generateSimulationTableMobile(returnRates, marketingCosts, baseParams) {
-            const table = document.getElementById('simulationTableMobile');
-            const tbody = table.querySelector('tbody');
-            
-            tbody.innerHTML = '';
-            
-            const headerRow = document.createElement('tr');
-            
-            const headerCell = document.createElement('td');
-            headerCell.textContent = '退货率\\付费占比';
-            headerCell.className = 'header-cell';
-            headerRow.appendChild(headerCell);
-            
-            marketingCosts.forEach(cost => {
-                const th = document.createElement('td');
-                th.textContent = `${cost}%`;
-                th.className = 'header-cell';
-                headerRow.appendChild(th);
-            });
-            tbody.appendChild(headerRow);
-            
-            returnRates.forEach(returnRate => {
-                const row = document.createElement('tr');
-                
-                const rateCell = document.createElement('td');
-                rateCell.textContent = `${returnRate}%`;
-                row.appendChild(rateCell);
-                
-                marketingCosts.forEach(marketingCost => {
-                    const profitRate = calculateProfitRateForSimulation(
-                        returnRate, marketingCost, baseParams
-                    );
-                    
-                    const cell = document.createElement('td');
-                    cell.textContent = `${profitRate.toFixed(2)}%`;
-                    cell.className = 'profit-cell';
-                    
-                    if (profitRate > 0) {
-                        cell.classList.add('positive');
-                    } else if (profitRate < 0) {
-                        cell.classList.add('negative');
-                    } else {
-                        cell.classList.add('zero');
-                    }
-                    
-                    row.appendChild(cell);
-                });
-                
-                tbody.appendChild(row);
-            });
-        }
+
+
+
+
 
 
         function openListPriceModal() {
-            document.getElementById('listPriceModal').style.display = 'block';
+            document.getElementById('listPriceModal').style.display = 'flex';
             initListPriceModal();
         }
 
@@ -2458,99 +1850,49 @@
             const tierInfo = usedTier ? 
                 ` (满¥${usedTier.threshold}减¥${usedTier.off})` : '';
             
-            // Check if mobile layout
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // Mobile optimized layout
-                let html = `
-                    <div class="mobile-result-container">
-                        <div class="mobile-result-header">
-                            <h4 class="mobile-result-title">
-                                🎯 目标到手价 ¥${targetPrice.toFixed(2)}
-                            </h4>
-                            <div class="mobile-badges">
-                                <span class="mobile-badge">
-                                    ${(discountRate * 100).toFixed(0)}%立减
-                                </span>
-                                <span class="mobile-badge">
-                                    ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mobile-price-section">
-                            <div class="mobile-price-card mobile-price-suggested">
-                                <div class="mobile-price-label">建议标价</div>
-                                <div class="mobile-price-value">¥${suggestedPrice.toFixed(2)}</div>
-                            </div>
-                            <div class="mobile-price-card mobile-price-actual">
-                                <div class="mobile-price-label">实际到手价</div>
-                                <div class="mobile-price-value">¥${finalPrice.toFixed(2)}</div>
-                            </div>
+            // 统一的响应式布局
+            let html = `
+                <div class="result-item" style="margin-bottom: 0; padding: 15px; background: white; border-radius: 8px; border: 1px solid #dee2e6;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 12px 0; color: #495057; border-bottom: 2px solid #667eea; padding-bottom: 6px; font-size: 1rem;">
+                            🎯 目标到手价 ¥${targetPrice.toFixed(2)}
+                        </h4>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
+                            <span style="font-weight: 600; color: #495057; background: #e3f2fd; padding: 5px 10px; border-radius: 15px; font-size: 0.85rem;">
+                                ${(discountRate * 100).toFixed(0)}%立减
+                            </span>
+                            <span style="font-size: 0.85rem; color: #6c757d; background: #f8f9fa; padding: 5px 10px; border-radius: 15px;">
+                                ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
+                            </span>
                         </div>
                     </div>
-                `;
-
-                if (usedTier) {
-                    html += `
-                        <div class="mobile-tier-info">
-                            <h4 class="mobile-tier-title">📋 满减规则</h4>
-                            <p class="mobile-tier-text">满¥${usedTier.threshold}减¥${usedTier.off}</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center; background: #e8f5e8; padding: 12px; border-radius: 8px; border: 1px solid #c3e6cb;">
+                            <div style="font-size: 0.8rem; color: #155724; margin-bottom: 5px; font-weight: 600;">建议标价</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #28a745;">¥${suggestedPrice.toFixed(2)}</div>
                         </div>
-                    `;
-                }
-
-                return html;
-            } else {
-                // Desktop layout (original)
-                let html = `
-                    <div class="result-item" style="margin-bottom: 0; padding: 15px; background: white; border-radius: 8px; border: 1px solid #dee2e6;">
-                        <div style="text-align: center; margin-bottom: 15px;">
-                            <h4 style="margin: 0 0 12px 0; color: #495057; border-bottom: 2px solid #667eea; padding-bottom: 6px; font-size: 1rem;">
-                                🎯 目标到手价 ¥${targetPrice.toFixed(2)}
-                            </h4>
-                            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px; flex-wrap: wrap;">
-                                <span style="font-weight: 600; color: #495057; background: #e3f2fd; padding: 5px 10px; border-radius: 15px; font-size: 0.85rem;">
-                                    ${(discountRate * 100).toFixed(0)}%立减
-                                </span>
-                                <span style="font-size: 0.85rem; color: #6c757d; background: #f8f9fa; padding: 5px 10px; border-radius: 15px;">
-                                    ${maxOff > 0 ? '满减' + tierInfo : '无满减'}
-                                </span>
-                            </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div style="text-align: center; background: #e8f5e8; padding: 12px; border-radius: 8px; border: 1px solid #c3e6cb;">
-                                <div style="font-size: 0.8rem; color: #155724; margin-bottom: 5px; font-weight: 600;">建议标价</div>
-                                <div style="font-size: 1.5rem; font-weight: bold; color: #28a745;">¥${suggestedPrice.toFixed(2)}</div>
-                            </div>
-                            <div style="text-align: center; background: #fff3cd; padding: 12px; border-radius: 8px; border: 1px solid #ffeaa7;">
-                                <div style="font-size: 0.8rem; color: #856404; margin-bottom: 5px; font-weight: 600;">实际到手价</div>
-                                <div style="font-size: 1.5rem; font-weight: bold; color: #ff6b35;">¥${finalPrice.toFixed(2)}</div>
-                            </div>
+                        <div style="text-align: center; background: #fff3cd; padding: 12px; border-radius: 8px; border: 1px solid #ffeaa7;">
+                            <div style="font-size: 0.8rem; color: #856404; margin-bottom: 5px; font-weight: 600;">实际到手价</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #ff6b35;">¥${finalPrice.toFixed(2)}</div>
                         </div>
                     </div>
+                </div>
+            `;
+
+            if (usedTier) {
+                html += `
+                    <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px; border: 1px solid #2196f3;">
+                        <h4 style="margin: 0 0 6px 0; color: #1976d2; font-size: 0.9rem;">📋 满减规则</h4>
+                        <p style="margin: 0; color: #1565c0; font-weight: 500; font-size: 0.85rem;">满¥${usedTier.threshold}减¥${usedTier.off}</p>
+                    </div>
                 `;
-
-                if (usedTier) {
-                    html += `
-                        <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px; border: 1px solid #2196f3;">
-                            <h4 style="margin: 0 0 6px 0; color: #1976d2; font-size: 0.9rem;">📋 满减规则</h4>
-                            <p style="margin: 0; color: #1565c0; font-weight: 500; font-size: 0.85rem;">满¥${usedTier.threshold}减¥${usedTier.off}</p>
-                        </div>
-                    `;
-                }
-
-                return html;
             }
+
+            return html;
         }
 
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('listPriceModal');
-            if (event.target === modal) {
-                closeListPriceModal();
-            }
-        }
+
     </script>
 
 
