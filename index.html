@@ -217,7 +217,6 @@
 
         .input-group label {
             display: block;
-            font-size: 1.2rem;
             color: #555;
             margin-bottom: 8px;
             font-weight: 600;
@@ -474,7 +473,6 @@
 
         .control-group label {
             display: block;
-            font-size: 1.1rem;
             color: #495057;
             margin-bottom: 12px;
             font-weight: 600;
@@ -1593,9 +1591,11 @@
 
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
             
+            // 为所有输入框添加点击时自动选中内容的功能
+            addInputAutoSelect();
             
             const desktopInputs = document.querySelectorAll('.desktop-layout input[type="number"]');
             desktopInputs.forEach(input => {
@@ -1610,7 +1610,7 @@
                 });
             });
             
-
+            
             
             const simulationInputs = [
                 'minReturnRate', 'maxReturnRate', 'minMarketingCost', 
@@ -1629,14 +1629,14 @@
                 }
             });
             
-
+            
             
             setTimeout(function() {
                 calculateProfit();
                 generateProfitSimulation();
             }, 200);
             
-
+            
             loadSimulationSettings();
         });
 
@@ -1663,6 +1663,8 @@
 
         function initListPriceModal() {
             bindListPriceEvents();
+            // 为模态框中的输入框添加点击时自动选中内容的功能
+            addInputAutoSelect();
             setTimeout(calculateListPrice, 100);
         }
 
@@ -1689,6 +1691,28 @@
             this.inputTimer = setTimeout(() => {
                 calculateListPrice();
             }, 300);
+        }
+
+        // 为所有输入框添加点击时自动选中内容的功能
+        function addInputAutoSelect() {
+            // 获取所有可编辑的输入框（排除只读的）
+            const inputs = document.querySelectorAll('input[type="text"]:not([readonly]), input[type="number"]:not([readonly])');
+            
+            inputs.forEach(input => {
+                // 移除之前可能存在的事件监听器，避免重复绑定
+                input.removeEventListener('click', selectInputContent);
+                // 添加点击事件监听器
+                input.addEventListener('click', selectInputContent);
+            });
+        }
+
+        // 点击输入框时自动选中内容的处理函数
+        function selectInputContent(event) {
+            const input = event.target;
+            // 延迟一帧执行，确保点击事件完成后再选中内容
+            requestAnimationFrame(() => {
+                input.select();
+            });
         }
 
 
