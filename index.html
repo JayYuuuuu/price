@@ -277,7 +277,6 @@
 
         @media (max-width: 768px) {
             .input-grid {
-                grid-template-columns: 1fr;
                 gap: 15px;
             }
             
@@ -334,6 +333,12 @@
 
             .control-group {
                 margin-bottom: 0;
+            }
+
+            /* 移动端：输入框标题字体改为10px，不加粗 */
+            .input-group label {
+                font-size: 12px;
+                font-weight: normal;
             }
         }
 
