@@ -181,6 +181,7 @@
           <button class="btn" id="recalcBtn">自动计算</button>
           <button class="btn" id="resetBtn" style="margin-left:8px;background:none;color:#6e6e73;font-size:11px;padding:0;border:none;cursor:pointer;">重置</button>
           <button class="btn" id="openLP" style="float:right">页面标价计算</button>
+          <button class="btn" id="openCal" style="float:right;margin-right:8px;background:#34c759">售价计算</button>
         </div>
       </div>
     </section>
@@ -634,6 +635,7 @@
       lpCalc();
     });
     document.getElementById('openLP').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='flex'; lpCalc();});
+    document.getElementById('openCal').addEventListener('click', ()=>{ window.location.href='cal.html'; });
     document.getElementById('lpClose').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='none'});
     document.getElementById('lpCalc').addEventListener('click', lpCalc);
 
