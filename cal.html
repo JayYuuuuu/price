@@ -40,14 +40,22 @@
     /* 结果大字 */
     .big{display:block; width:100%; text-align:center; padding:18px 14px; border-radius:14px; box-sizing:border-box}
     .big-input{width:100%; background:linear-gradient(180deg,#fafafa,#fff); border:1px solid #e5e5ea; border-radius:14px; padding:18px 16px; font-size:46px; font-weight:800; text-align:center; outline:none}
-    .big-input.primary{--base:46px; font-size:var(--base); border-color:#d0e3ff; box-shadow:0 0 0 3px rgba(0,122,255,.10)}
+    .big-input.primary{--base:40px; font-size:var(--base); border-color:#d0e3ff; box-shadow:0 0 0 3px rgba(0,122,255,.10)}
     .big-input.secondary{font-size:35px}
     .big-input.tertiary{font-size:40px}
     .big-input[readonly]{background:linear-gradient(180deg,#fafafa,#fff)}
     .big-input.asdiv{display:flex; align-items:baseline; justify-content:center; gap:10px}
     .big-input .minor{font-weight:700; color:#444; font-size:calc(var(--base, 46px) - 8px)}
-    .big-input .prefix,.big-input .suffix{font-weight:700; color:#333; font-size:calc(var(--base, 46px) - 10px)}
-    .big-input .amount{font-size:calc(var(--base, 46px) + 6px); font-weight:900; color:#111; letter-spacing:.5px}
+    .big-input .prefix,.big-input .suffix{font-weight:700; color:#444; font-size:calc(var(--base, 40px) - 10px)}
+    .big-input .amount{font-size:calc(var(--base, 40px) + 6px); font-weight:900; color:#111; letter-spacing:.5px}
+    /* 仅建议到手价输入框数字部分样式 */
+    .big-input.primary .amount{
+      background: linear-gradient(180deg,#2c2c2e,#1c1c1e);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 0 8px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.15);
+    }
     .big.hint{font-size:13px; color:var(--muted); padding:0; margin-top:6px; display:none}
     .muted{color:var(--muted)}
     .step{font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.2px}
@@ -55,7 +63,7 @@
     .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:10px}
     .kpi .item{border:1px solid #e5e5ea; border-radius:12px; background:#fff; padding:10px}
     .kpi .lab{font-size:12px; color:var(--muted)}
-    .kpi .val{margin-top:4px; font-size:18px; font-weight:700; font-family:var(--mono)}
+    .kpi .val{margin-top:4px; font-size:18px; font-weight:500; font-family:var(--mono);color: #444444;}
 
     .note{font-size:12px; color:var(--muted)}
     
@@ -139,7 +147,7 @@
     }
     
     .option-value {
-      font-size: 32px;
+      font-size: 38px;
       font-weight: 900;
       color: var(--accent);
       margin-bottom: 8px;
@@ -211,11 +219,11 @@
         <div class="content">
           <div class="grid grid-3565">
             <div>
-              <label>进货价（不含税，¥）</label>
+              <label>聚水潭进货价（不含税，¥）</label>
               <input id="costPrice" type="number" step="0.01" placeholder="35.00" />
             </div>
             <div>
-              <label>品类（决定退货率与广告占比）</label>
+              <label>产品品类（预估退货率与广告占比）</label>
               <select id="cate">
                 <option value="" selected>请选择品类</option>
                 <option value="内裤|0.06|0.30">内裤（退货率预估 6%）</option>
@@ -250,7 +258,7 @@
           </div>
 
           <div class="block" style="margin-top:12px">
-            <div class="note">系统默认参数（不可修改，用于参与计算）：</div>
+            <div class="note">系统默认参数 | 均以含税价为口径（不可修改，用于参与计算）：</div>
             <div class="kpi" style="margin-top:8px">
               <div class="item"><div class="lab">销项税率</div><div class="val" id="k_sales">13%</div></div>
               <div class="item"><div class="lab">商品进项税率</div><div class="val" id="k_output">13%</div></div>
@@ -271,11 +279,11 @@
         <div class="content">
           <!-- 1. 推算到手价（来源） -->
           <div>
-            <label>推算到手价</label>
+            <label>到手价</label>
             <div id="outPriceInput" class="big-input tertiary asdiv">
               <span class="prefix">推算到手价</span>
               <span id="outAmount" class="amount">—</span>
-              <span class="suffix">元</span>
+              <span class="suffix">元可达目标</span>
               <span id="outMinor" class="minor"></span>
             </div>
           </div>
@@ -295,9 +303,9 @@
           <div style="margin-top:14px">
             <label>页面标价（店铺优惠立减10%）</label>
             <div id="listPriceInput" class="big-input secondary asdiv">
-              <span class="prefix">建议页面标价</span>
+              <span class="prefix">页面标价</span>
               <span id="listAmount" class="amount">—</span>
-              <span class="suffix">元</span>
+              <span class="suffix">元（立减10%）</span>
               <span id="listMinor" class="minor"></span>
             </div>
           </div>
