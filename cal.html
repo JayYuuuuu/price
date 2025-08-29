@@ -19,7 +19,6 @@
     .sub{color:var(--muted); font-size:13px; margin-top:6px}
     main{padding:20px; display:grid; gap:16px}
 
-    /* 两栏：左输入、右结果 */
     .wrap{display:grid; grid-template-columns: 45% 54%; gap:16px; align-items:stretch}
     @media (max-width: 980px){ .wrap{ grid-template-columns: 1fr; } }
 
@@ -37,7 +36,6 @@
 
     .pill{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:#eef2f7; border:1px solid #cfd3da; font-size:12px; font-weight:600; color:#0f172a; letter-spacing:.2px}
 
-    /* 结果大字 */
     .big{display:block; width:100%; text-align:center; padding:18px 14px; border-radius:14px; box-sizing:border-box}
     .big-input{width:100%; background:linear-gradient(180deg,#fafafa,#fff); border:1px solid #e5e5ea; border-radius:14px; padding:18px 16px; font-size:46px; font-weight:800; text-align:center; outline:none}
     .big-input.primary{--base:40px; font-size:var(--base); border-color:#d0e3ff; box-shadow:0 0 0 3px rgba(0,122,255,.10)}
@@ -55,6 +53,7 @@
       box-shadow: 0 0 0 1px rgba(255,255,255,.15);
     }
     .big-input .amount{font-size:calc(var(--base, 40px) + 6px); font-weight:900; color:#111; letter-spacing:.5px}
+    .big-input .amount, .kpi .val { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
     .big.hint{font-size:13px; color:var(--muted); padding:0; margin-top:6px; display:none}
     .muted{color:var(--muted)}
     .step{font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.2px}
@@ -66,7 +65,6 @@
 
     .note{font-size:12px; color:var(--muted)}
     
-    /* 低调的清除按钮样式 */
     .clear-btn {
       background: transparent;
       border: none;
@@ -83,7 +81,6 @@
       color: var(--bad);
     }
 
-    /* ===== 目标利润率选择器样式 ===== */
     .margin-selector {
       background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
       border: 2px solid #e1e5f2;
@@ -168,11 +165,10 @@
       font-weight: 600;
     }
 
-    /* iPad 适配 */
     @media (max-width: 1100px){
       input, select{font-size:20px}
     }
-    /* 手机端优化（<=740px） */
+
     @media (max-width: 740px){
       header{padding:16px}
       h1{font-size:18px}
@@ -189,7 +185,6 @@
       .big-input .amount{font-size:calc(var(--base, 30px) + 6px)}
       .big-input .minor{font-size:calc(var(--base, 30px) - 8px)}
       
-      /* 手机端到手价输入框多行布局 */
       .big-input.asdiv {
         flex-direction: column;
         align-items: center;
@@ -222,15 +217,12 @@
         margin-top: 2px;
       }
 
-      /* 移动端利润率选择器适配 - 保持两列布局 */
       .margin-selector { padding: 14px; margin: 12px 0 }
-      /* 移除单列设置，保持两列布局 */
       /* .margin-options { grid-template-columns: 1fr; gap: 10px } */
       .option-content { padding: 10px 8px }
       .option-value { font-size: 24px }
       .margin-label { font-size: 14px; margin-bottom: 10px }
 
-      /* 系统参数保持一行4列布局（按需求） */
       .kpi { grid-template-columns: repeat(4, 1fr); gap: 8px }
       .kpi .item { padding: 8px 6px }
       .kpi .lab { font-size: 11px; line-height: 1.2 }
@@ -246,14 +238,13 @@
 
   <main>
     <div class="wrap">
-      <!-- 左：输入与固定参数展示 -->
       <section class="card">
         <h2>参数与输入 <button class="clear-btn" id="clearBtn" title="清除所有保存的输入数据">恢复默认</button></h2>
         <div class="content">
           <div class="grid grid-3565">
             <div>
               <label>聚水潭进货价（不含税，¥）</label>
-              <input id="costPrice" type="number" step="0.01" placeholder="35.00" />
+              <input id="costPrice" type="number" step="0.01" placeholder="35.00" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" autocomplete="off" />
             </div>
             <div>
               <label>产品品类（预估退货率与广告占比）</label>
@@ -307,11 +298,9 @@
         </div>
       </section>
 
-      <!-- 右：计算结果 -->
       <section class="card">
         <h2>结果与建议（价格已包含广告费预算）</h2>
         <div class="content">
-          <!-- 1. 推算到手价（来源） -->
           <div>
             <label>到手价</label>
             <div id="outPriceInput" class="big-input tertiary asdiv">
@@ -322,7 +311,6 @@
             </div>
           </div>
 
-          <!-- 2. 建议到手价（主结论） -->
           <div style="margin-top:14px">
             <label>建议到手价</label>
             <div id="sugPriceInput" class="big-input primary asdiv">
@@ -333,7 +321,6 @@
             </div>
           </div>
 
-          <!-- 3. 页面标价（基于优惠反解） -->
           <div style="margin-top:14px">
             <label>页面标价（店铺优惠立减10%）</label>
             <div id="listPriceInput" class="big-input secondary asdiv">
@@ -349,7 +336,6 @@
   </main>
 
   <script>
-    // ===== 计算函数（从 engine.js 精简内联，支持离线独立运行） =====
     function profitGivenAdRateAndR(p, adRate, r, basis) {
       const Rev = p.sellingPrice * r;
       const goodsCost = p.costPrice * (1 + p.inputTaxRate) * (p.goodsMode === 'canReturn' ? r : 1);
@@ -393,7 +379,6 @@
       return S > 0 && isFinite(S) ? S : NaN;
     }
 
-    // ===== 标价计算（到手价 ↔ 标价）辅助 =====
     function yuanToWu(y){
       const s = String(y ?? '').trim();
       if (!s) return 0;
@@ -448,15 +433,12 @@
       }
       let price = lo;
       const targetWu = targetCents * 100;
-      let netAfterWu = listPriceForwardNetWu(price, discountPct, tiers);
-      while (price > 0 && netAfterWu > targetWu){
+      while (price > 0 && listPriceForwardNetWu(price - 1, discountPct, tiers) >= targetWu){
         price -= 1;
-        netAfterWu = listPriceForwardNetWu(price, discountPct, tiers);
       }
       return price;
     }
 
-    // 固定系统参数（不可编辑）
     const SYSTEM = {
       salesTaxRate: 0.13,       // 销项税率 13%
       outputTaxRate: 0.13,      // 商品进项税率 13%
@@ -485,22 +467,20 @@
     const listAmount = $('listAmount');
     const listMinor = $('listMinor');
 
+    Array.from(document.querySelectorAll('input[type="number"]')).forEach(attachNumberGuards);
+
     function parseCate(val){
       // 格式： 名称|退货率|广告占比
       const parts = String(val || '').split('|');
       const name = parts[0] || '';
       const rr = parseFloat(parts[1] || '0') || 0; // 小数
       let a = parseFloat(parts[2] || '0') || 0; // 小数（广告占比数值）
-      
-      // 新算法：针对内裤类目的广告占比动态调整
-      // 当内裤类目的进货价小于32.5元时，广告占比按30%预估
-      // 当进货价大于等于32.5元时，广告占比按25%预估
+
       const costPrice = parseFloat(inCost.value) || 0;
       if (name === '内裤') {
         if (costPrice >= 32.5) {
-          a = 0.25; // 进货价>=32.5元时，内裤广告占比为25%
+          a = 0.25;
         }
-        // 小于32.5元时保持原有的30%（无需修改）
       }
       
       return { name, returnRate: rr, adRate: a };
@@ -509,32 +489,42 @@
     function toCents(x){ return Math.round(Number(x || 0) * 100); }
     function fromCents(c){ return Number(c || 0) / 100; }
 
+    function attachNumberGuards(el){
+      if (!el) return;
+      const banned = new Set(['e','E','+','-']);
+      el.addEventListener('keydown', (evt)=>{
+        if (banned.has(evt.key)) evt.preventDefault();
+      });
+      el.addEventListener('input', (evt)=>{
+        const t = evt.target;
+
+        let v = String(t.value).replace(/[eE+\-]/g, '');
+
+        const m = v.match(/^\d*(?:\.\d{0,2})?/);
+        t.value = m ? m[0] : '';
+      });
+    }
+
     function roundUpTo_5_8_9_8(x){
-      // 规则：向上取到以 .8 结尾的 5 或 9 位，如 65.8、69.8
-      // 新规则：如果推算的到手价便宜1元以内有最佳售价，则可以选择往下一档的售价
       const base10 = Math.floor(x / 10) * 10;
       const c58 = base10 + 5.8;
       const c98 = base10 + 9.8;
-      const prevBase98 = base10 - 10 + 9.8; // 上一档的9.8
-      const prevBase58 = base10 - 10 + 5.8; // 上一档的5.8
+      const prevBase98 = base10 - 10 + 9.8;
+      const prevBase58 = base10 - 10 + 5.8;
       const nextBase58 = base10 + 10 + 5.8;
       
-      // 如果价格刚好比某个档位高一点点（不超过1元），则选择往下一档
       if (x > c58 && x <= c58 + 1) return c58;
       if (x > c98 && x <= c98 + 1) return c98;
       
-      // 新增：如果价格比某个档位低一点点（不超过1元），则选择往上一档
       if (x < c58 && x >= c58 - 1) return c58;
       if (x < c98 && x >= c98 - 1) return c98;
       
-      // 检查上一档的价格，但必须在1元范围内
       if (x >= prevBase98 && x <= prevBase98 + 1 && prevBase98 > 0) return prevBase98;
       if (x >= prevBase58 && x <= prevBase58 + 1 && prevBase58 > 0) return prevBase58;
       
-      // 原有逻辑：选择合适的档位
       if (x <= c58) return c58;
       if (x <= c98) return c98;
-      return nextBase58; // 下一档 5.8
+      return nextBase58;
     }
 
     function recalc(){
@@ -564,9 +554,8 @@
 
       const r = Math.max(0, 1 - cate.returnRate);
 
-      // 构造参数：售价未知，仅用于公式中的成本项
       const baseParams = {
-        sellingPrice: 0, // solveSellingPrice 不依赖该值
+        sellingPrice: 0, 
         returnRate: cate.returnRate,
         costPrice: cost,
         inputTaxRate: SYSTEM.inputTaxRate,
@@ -580,25 +569,23 @@
         goodsMode: SYSTEM.goodsMode
       };
 
-      // 到手价：按广告占比（有效营收口径）与目标利润率反解
       const S = solveSellingPrice(baseParams, r, cate.adRate, 'effective', targetM);
       if (outAmount) outAmount.textContent = isFinite(S)&&S>0?fmt2(S):'—';
-      if (outMinor) outMinor.textContent = '';
+      if (outMinor) outMinor.textContent = isFinite(S)&&S>0?'':'（参数不可达：试着降低目标利润率或广告占比）';
 
-      // 建议到手价：向上取到 *.8（优先 9.8，其次 5.8）
       let S_sug = isFinite(S) && S>0 ? roundUpTo_5_8_9_8(S) : NaN;
       if (!isFinite(S_sug)){
         if (sugAmount) sugAmount.textContent = '—';
-        if (sugMinor) sugMinor.textContent = '';
+        if (sugMinor) sugMinor.textContent = '（参数不可达：试着降低目标利润率或广告占比）';
       } else {
-        // 计算建议价对应的利润率
+
         const paramsForMargin = { ...baseParams, sellingPrice: S_sug };
         const { margin } = profitGivenAdRateAndR(paramsForMargin, cate.adRate, r, 'effective');
         if (sugAmount) sugAmount.textContent = `${fmt2(S_sug)}`;
         if (sugMinor) sugMinor.textContent = `（利润率约 ${fmtPct(margin)}）`;
       }
 
-      // 页面标价：默认立减10%、无满减
+
       if (isFinite(S_sug)){
         const targetCents = toCents(S_sug);
         const listCents = solveListPriceCents(targetCents, 0.10, []);
@@ -608,14 +595,12 @@
         if (listMinor) listMinor.textContent = '';
       } else {
         if (listAmount) listAmount.textContent = '—';
-        if (listMinor) listMinor.textContent = '';
+        if (listMinor) listMinor.textContent = '（参数不可达：试着降低目标利润率或广告占比）';
       }
     }
 
-    // ===== 本地存储功能 =====
     const STORAGE_KEY = 'listprice_user_data';
     
-    // 保存用户数据到本地存储
     function saveUserData() {
       const userData = {
         costPrice: inCost.value,
@@ -628,21 +613,18 @@
       }
     }
     
-    // 从本地存储恢复用户数据
+
     function restoreUserData() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
           const userData = JSON.parse(saved);
           
-          // 恢复进货价
+
           if (userData.costPrice && userData.costPrice.trim()) {
             inCost.value = userData.costPrice;
           }
           
-          // 不恢复品类，避免误算；默认保持未选择
-          
-          // 恢复目标利润率
           if (userData.targetMargin) {
             const targetRadio = document.querySelector(`input[name="targetM"][value="${userData.targetMargin}"]`);
             if (targetRadio) {
@@ -657,11 +639,9 @@
       }
     }
     
-    // 清除本地存储数据
     function clearUserData() {
       try {
         localStorage.removeItem(STORAGE_KEY);
-        // 重置表单到默认值
         inCost.value = '';
         selCate.value = '';
         document.querySelector('input[name="targetM"][value="0.05"]').checked = true;
@@ -684,26 +664,24 @@
         el.addEventListener('blur', saveUserData); // 失去焦点时保存
       }
     });
-    
-    // 进货价变化时特别处理内裤类目的广告占比调整
+
     inCost.addEventListener('input', function() {
       const currentCate = selCate.value;
       if (currentCate && currentCate.startsWith('内裤|')) {
-        // 重新解析类目信息（会根据进货价调整广告占比）
         recalc();
       }
     });
     
-    // 为新的清除按钮添加事件监听器
+
     document.getElementById('clearBtn').addEventListener('click', clearUserData);
 
-    // 页面初始化
+
     function initPage() {
       restoreUserData(); // 恢复用户数据
       recalc();         // 初次计算
     }
 
-    // 页面加载完成后初始化
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initPage);
     } else {
