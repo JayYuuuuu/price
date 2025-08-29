@@ -14,11 +14,12 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
-    header{padding:20px 20px 0}
+    .container{max-width:1688px;margin:0 auto;padding:0 20px}
+    header{padding:20px 0 0}
     h1{margin:0 0 4px 0;font-size:22px}
     .sub{color:var(--muted);font-size:12px}
 
-    main{padding:20px;max-width:1688px;margin:0 auto}
+    main{padding:20px 0}
     .layout{display:grid;grid-template-columns:420px 1fr;gap:20px}
     .right-col{display:grid; grid-template-rows:auto 1fr; gap:20px}
     @media (max-width: 1100px){ .layout{grid-template-columns:1fr} .right-col{grid-template-rows:auto auto} }
@@ -85,566 +86,568 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>电商计算器</h1>
-    <div class="sub">左：参数设置 ｜ 右上：投放决策 ｜ 右下：利润推演 ｜ 标价计算用活动价来倒推页面标价</div>
-  </header>
+  <div class="container">
+    <header>
+      <h1>电商计算器</h1>
+      <div class="sub">左：参数设置 ｜ 右上：投放决策 ｜ 右下：利润推演 ｜ 标价计算用活动价来倒推页面标价</div>
+    </header>
 
-  <main class="layout">
-    <!-- 左：参数设置 -->
-    <section class="card">
-      <h2>参数设置</h2>
-      <div class="content params">
+    <main class="layout">
+      <!-- 左：参数设置 -->
+      <section class="card">
+        <h2>参数设置</h2>
+        <div class="content params">
 
-        <!-- 常用参数 -->
-        <div class="param-group">
-          <div class="group-title">常用参数</div>
-          <div class="param-grid">
-            <div>
-              <label>售价 / AOV（含税）</label>
-              <input id="sellingPrice" type="number" step="0.01" value="109" />
-            </div>
-            <div>
-              <label>退货率（%）</label>
-              <input id="returnRate" type="number" step="0.01" value="20" />
-            </div>
-            <div>
-              <label>进货价（不含税）</label>
-              <input id="costPrice" type="number" step="0.01" value="58" />
-            </div>
-            <div>
-              <label>平台佣金率（%）</label>
-              <input id="platformRate" type="number" step="0.01" value="5.5" />
+          <!-- 常用参数 -->
+          <div class="param-group">
+            <div class="group-title">常用参数</div>
+            <div class="param-grid">
+              <div>
+                <label>售价 / AOV（含税）</label>
+                <input id="sellingPrice" type="number" step="0.01" value="109" />
+              </div>
+              <div>
+                <label>退货率（%）</label>
+                <input id="returnRate" type="number" step="0.01" value="20" />
+              </div>
+              <div>
+                <label>进货价（不含税）</label>
+                <input id="costPrice" type="number" step="0.01" value="58" />
+              </div>
+              <div>
+                <label>平台佣金率（%）</label>
+                <input id="platformRate" type="number" step="0.01" value="5.5" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 模拟参数 -->
-        <div class="param-group">
-          <div class="group-title">模拟参数</div>
-          <div class="param-grid">
-            <div>
-              <label>模拟广告点击单价（元/次）</label>
-              <input id="cpc" type="number" step="0.0001" value="2.5" />
-            </div>
-            <div>
-              <label>模拟产品转化率（%）</label>
-              <input id="cvr" type="number" step="0.01" value="15" />
+          <!-- 模拟参数 -->
+          <div class="param-group">
+            <div class="group-title">模拟参数</div>
+            <div class="param-grid">
+              <div>
+                <label>模拟广告点击单价（元/次）</label>
+                <input id="cpc" type="number" step="0.0001" value="2.5" />
+              </div>
+              <div>
+                <label>模拟产品转化率（%）</label>
+                <input id="cvr" type="number" step="0.01" value="15" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 其他参数（默认选项） -->
-        <div class="param-group other-params">
-          <div class="group-title">其他参数</div>
-          <div class="param-grid other-grid">
-            <div>
-              <label>物流费</label>
-              <input id="shippingCost" type="number" step="0.01" value="2.8" />
-            </div>
-            <div>
-              <label>运费险</label>
-              <input id="shippingInsurance" type="number" step="0.01" value="1.5" />
-            </div>
-            <div>
-              <label>其他成本</label>
-              <input id="otherCost" type="number" step="0.01" value="2.5" />
-            </div>
-            <div>
-              <label>销项税率（%）</label>
-              <input id="salesTaxRate" type="number" step="0.01" value="13" />
-            </div>
-            <div>
-              <label>开票费用（%）</label>
-              <input id="inputTaxRate" type="number" step="0.01" value="6" />
-            </div>
-            <div>
-              <label>进项税率（%）</label>
-              <input id="outputTaxRate" type="number" step="0.01" value="13" />
-            </div>
-            <div>
-              <label>服务费税率（%）</label>
-              <input id="serviceVATRate" type="number" step="0.01" value="6" />
-            </div>
-            <div>
-              <label>进货模式</label>
-              <select id="goodsMode">
-                <option value="canReturn" selected>可退</option>
-                <option value="cannotReturn">不可退</option>
-              </select>
+          <!-- 其他参数（默认选项） -->
+          <div class="param-group other-params">
+            <div class="group-title">其他参数</div>
+            <div class="param-grid other-grid">
+              <div>
+                <label>物流费</label>
+                <input id="shippingCost" type="number" step="0.01" value="2.8" />
+              </div>
+              <div>
+                <label>运费险</label>
+                <input id="shippingInsurance" type="number" step="0.01" value="1.5" />
+              </div>
+              <div>
+                <label>其他成本</label>
+                <input id="otherCost" type="number" step="0.01" value="2.5" />
+              </div>
+              <div>
+                <label>销项税率（%）</label>
+                <input id="salesTaxRate" type="number" step="0.01" value="13" />
+              </div>
+              <div>
+                <label>开票费用（%）</label>
+                <input id="inputTaxRate" type="number" step="0.01" value="6" />
+              </div>
+              <div>
+                <label>进项税率（%）</label>
+                <input id="outputTaxRate" type="number" step="0.01" value="13" />
+              </div>
+              <div>
+                <label>服务费税率（%）</label>
+                <input id="serviceVATRate" type="number" step="0.01" value="6" />
+              </div>
+              <div>
+                <label>进货模式</label>
+                <select id="goodsMode">
+                  <option value="canReturn" selected>可退</option>
+                  <option value="cannotReturn">不可退</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="full hint">说明：所有百分比输入均为"人类口径"，系统会自动换算为 0~1 小数参与计算。</div>
-        <div class="full">
-          <button class="btn" id="recalcBtn">自动计算</button>
-          <button class="btn" id="resetBtn" style="margin-left:8px;background:none;color:#6e6e73;font-size:11px;padding:0;border:none;cursor:pointer;">重置</button>
-          <button class="btn" id="openLP" style="float:right">标价计算</button>
-          <button class="btn" id="openCal" style="float:right;margin-right:8px;background:#34c759">售价计算</button>
+          <div class="full hint">说明：所有百分比输入均为"人类口径"，系统会自动换算为 0~1 小数参与计算。</div>
+          <div class="full">
+            <button class="btn" id="recalcBtn">自动计算</button>
+            <button class="btn" id="resetBtn" style="margin-left:8px;background:none;color:#6e6e73;font-size:11px;padding:0;border:none;cursor:pointer;">重置</button>
+            <button class="btn" id="openLP" style="float:right">标价计算</button>
+            <button class="btn" id="openCal" style="float:right;margin-right:8px;background:#34c759">售价计算</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右侧列：包含投放决策 + 利润推演 -->
+      <div class="right-col">
+      <!-- 右：上  投放决策 -->
+      <section class="card">
+        <h2>投放决策</h2>
+        <div class="content">
+          <div class="kpis" id="kpiBand">
+            <div class="kpi"><div class="lab">保本ROI（算上退款率影响）</div><div class="val" id="beRoas">–</div></div>
+            <div class="kpi"><div class="lab">保本广告占比（算上退款率影响）</div><div class="val" id="beAdRate">–</div></div>
+            <div class="kpi"><div class="lab">利润率（模拟广告成本下）</div><div class="val" id="profitRate">–</div></div>
+            <div class="kpi"><div class="lab">当前模拟参数下真实ROI</div><div class="val" id="curROAS">–</div></div>
+            <div class="kpi"><div class="lab">保本CPC（模拟转化率下）</div><div class="val" id="maxCpc">–</div></div>
+            <div class="kpi"><div class="lab">保本转化率（模拟CPC下）</div><div class="val" id="cvrCrit">–</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右：下  利润推演 -->
+      <section class="card">
+        <h2>利润推演（付费占比 × 退货率）</h2>
+        <div class="content">
+          <div class="row compact" style="margin-bottom:8px">
+            <label>付费占比范围：</label>
+            <span class="chip">起</span>
+            <input id="adStart" type="number" step="1" value="5">
+            <span class="chip">止</span>
+            <input id="adEnd" type="number" step="1" value="45">
+            <span class="chip">步长</span>
+            <input id="adStep" type="number" step="1" value="3"><span class="unit">%</span>
+            <label style="margin-left:12px">退货率范围：</label>
+            <span class="chip">起</span>
+            <input id="rrStart" type="number" step="1" value="5">
+            <span class="chip">止</span>
+            <input id="rrEnd" type="number" step="1" value="32">
+            <span class="chip">步长</span>
+            <input id="rrStep" type="number" step="1" value="2"><span class="unit">%</span>
+            <button class="btn" id="simBtn" style="margin-left:auto">推演</button>
+          </div>
+          <div id="simTableWrap"></div>
+        </div>
+      </section>
+      </div>
+    </main>
+
+    <!-- 标价计算浮窗 -->
+    <div class="overlay" id="lpOverlay">
+      <div class="modal">
+        <header>
+          <h3 style="margin:0">标价计算（轻量）</h3>
+          <button class="close" id="lpClose">✕</button>
+        </header>
+        <div class="content">
+          <div class="lp-grid">
+            <div>
+              <label>目标到手价</label>
+              <input class="big-input" id="lpTarget" type="number" step="0.01" value="59.9" />
+            </div>
+            <div>
+              <label>页面标价（自动）</label>
+              <div class="big-output" id="lpPrice">–</div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <label>日常立减（%）</label>
+            <input id="lpDisc" type="number" step="0.01" value="10" style="width:110px"/>
+            <label style="margin-left:8px">单件打折（可为空，例 9 表示 9 折）</label>
+            <input id="lpExtra" type="number" step="0.01" placeholder="" style="width:110px"/>
+            <button class="btn" id="lpCalc" style="margin-left:auto">计算</button>
+          </div>
+          <div class="hint">简化规则：标价 × (1 − 立减%) × (活动折扣/10) ≈ 到手价；若“单件打折”留空，则仅按立减。</div>
         </div>
       </div>
-    </section>
-
-    <!-- 右侧列：包含投放决策 + 利润推演 -->
-    <div class="right-col">
-    <!-- 右：上  投放决策 -->
-    <section class="card">
-      <h2>投放决策</h2>
-      <div class="content">
-        <div class="kpis" id="kpiBand">
-          <div class="kpi"><div class="lab">保本ROI（算上退款率影响）</div><div class="val" id="beRoas">–</div></div>
-          <div class="kpi"><div class="lab">保本广告占比（算上退款率影响）</div><div class="val" id="beAdRate">–</div></div>
-          <div class="kpi"><div class="lab">利润率（模拟广告成本下）</div><div class="val" id="profitRate">–</div></div>
-          <div class="kpi"><div class="lab">当前模拟参数下真实ROI</div><div class="val" id="curROAS">–</div></div>
-          <div class="kpi"><div class="lab">保本CPC（模拟转化率下）</div><div class="val" id="maxCpc">–</div></div>
-          <div class="kpi"><div class="lab">保本转化率（模拟CPC下）</div><div class="val" id="cvrCrit">–</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 右：下  利润推演 -->
-    <section class="card">
-      <h2>利润推演（付费占比 × 退货率）</h2>
-      <div class="content">
-        <div class="row compact" style="margin-bottom:8px">
-          <label>付费占比范围：</label>
-          <span class="chip">起</span>
-          <input id="adStart" type="number" step="1" value="5">
-          <span class="chip">止</span>
-          <input id="adEnd" type="number" step="1" value="45">
-          <span class="chip">步长</span>
-          <input id="adStep" type="number" step="1" value="3"><span class="unit">%</span>
-          <label style="margin-left:12px">退货率范围：</label>
-          <span class="chip">起</span>
-          <input id="rrStart" type="number" step="1" value="5">
-          <span class="chip">止</span>
-          <input id="rrEnd" type="number" step="1" value="32">
-          <span class="chip">步长</span>
-          <input id="rrStep" type="number" step="1" value="2"><span class="unit">%</span>
-          <button class="btn" id="simBtn" style="margin-left:auto">推演</button>
-        </div>
-        <div id="simTableWrap"></div>
-      </div>
-    </section>
     </div>
-  </main>
 
-  <!-- 标价计算浮窗 -->
-  <div class="overlay" id="lpOverlay">
-    <div class="modal">
-      <header>
-        <h3 style="margin:0">标价计算（轻量）</h3>
-        <button class="close" id="lpClose">✕</button>
-      </header>
-      <div class="content">
-        <div class="lp-grid">
-          <div>
-            <label>目标到手价</label>
-            <input class="big-input" id="lpTarget" type="number" step="0.01" value="59.9" />
-          </div>
-          <div>
-            <label>页面标价（自动）</label>
-            <div class="big-output" id="lpPrice">–</div>
-          </div>
-        </div>
-        <div class="row" style="margin-top:12px">
-          <label>日常立减（%）</label>
-          <input id="lpDisc" type="number" step="0.01" value="10" style="width:110px"/>
-          <label style="margin-left:8px">单件打折（可为空，例 9 表示 9 折）</label>
-          <input id="lpExtra" type="number" step="0.01" placeholder="" style="width:110px"/>
-          <button class="btn" id="lpCalc" style="margin-left:auto">计算</button>
-        </div>
-        <div class="hint">简化规则：标价 × (1 − 立减%) × (活动折扣/10) ≈ 到手价；若“单件打折”留空，则仅按立减。</div>
-      </div>
-    </div>
-  </div>
+    <script>
+      // —— 自动保存功能 ——
+      // 定义需要保存的输入框ID列表（按页面分组）
+      const SAVED_INPUTS = [
+        // 参数设置
+        'sellingPrice', 'returnRate', 'costPrice', 'inputTaxRate', 'outputTaxRate',
+        'platformRate', 'shippingCost', 'shippingInsurance', 'otherCost',
+        'salesTaxRate', 'serviceVATRate', 'goodsMode', 'cpc', 'cvr',
+        // 利润推演
+        'adStart', 'adEnd', 'adStep', 'rrStart', 'rrEnd', 'rrStep',
+        // 标价计算
+        'lpTarget', 'lpDisc', 'lpExtra'
+      ];
 
-  <script>
-    // —— 自动保存功能 ——
-    // 定义需要保存的输入框ID列表（按页面分组）
-    const SAVED_INPUTS = [
-      // 参数设置
-      'sellingPrice', 'returnRate', 'costPrice', 'inputTaxRate', 'outputTaxRate',
-      'platformRate', 'shippingCost', 'shippingInsurance', 'otherCost',
-      'salesTaxRate', 'serviceVATRate', 'goodsMode', 'cpc', 'cvr',
-      // 利润推演
-      'adStart', 'adEnd', 'adStep', 'rrStart', 'rrEnd', 'rrStep',
-      // 标价计算
-      'lpTarget', 'lpDisc', 'lpExtra'
-    ];
+      // 默认值映射（用于重置功能）
+      const DEFAULT_VALUES = {
+        sellingPrice: '109', returnRate: '20', costPrice: '58', inputTaxRate: '6', outputTaxRate: '13',
+        platformRate: '5.5', shippingCost: '2.8', shippingInsurance: '1.5', otherCost: '2.5',
+        salesTaxRate: '13', serviceVATRate: '6', goodsMode: 'canReturn', cpc: '2.5', cvr: '15',
+        adStart: '5', adEnd: '45', adStep: '3', rrStart: '5', rrEnd: '32', rrStep: '2',
+        lpTarget: '59.9', lpDisc: '10', lpExtra: ''
+      };
 
-    // 默认值映射（用于重置功能）
-    const DEFAULT_VALUES = {
-      sellingPrice: '109', returnRate: '20', costPrice: '58', inputTaxRate: '6', outputTaxRate: '13',
-      platformRate: '5.5', shippingCost: '2.8', shippingInsurance: '1.5', otherCost: '2.5',
-      salesTaxRate: '13', serviceVATRate: '6', goodsMode: 'canReturn', cpc: '2.5', cvr: '15',
-      adStart: '5', adEnd: '45', adStep: '3', rrStart: '5', rrEnd: '32', rrStep: '2',
-      lpTarget: '59.9', lpDisc: '10', lpExtra: ''
-    };
-
-    // 保存单个输入框的值
-    function saveInputValue(inputId) {
-      const element = document.getElementById(inputId);
-      if (!element) return;
-
-      const value = element.type === 'checkbox' ? element.checked :
-                   element.tagName === 'SELECT' ? element.value : element.value;
-      localStorage.setItem(`single_${inputId}`, value);
-    }
-
-    // 恢复单个输入框的值
-    function restoreInputValue(inputId) {
-      const savedValue = localStorage.getItem(`single_${inputId}`);
-      if (savedValue !== null) {
+      // 保存单个输入框的值
+      function saveInputValue(inputId) {
         const element = document.getElementById(inputId);
-        if (element) {
-          if (element.type === 'checkbox') {
-            element.checked = savedValue === 'true';
-          } else if (element.tagName === 'SELECT') {
-            element.value = savedValue;
-          } else {
-            element.value = savedValue;
+        if (!element) return;
+
+        const value = element.type === 'checkbox' ? element.checked :
+                     element.tagName === 'SELECT' ? element.value : element.value;
+        localStorage.setItem(`single_${inputId}`, value);
+      }
+
+      // 恢复单个输入框的值
+      function restoreInputValue(inputId) {
+        const savedValue = localStorage.getItem(`single_${inputId}`);
+        if (savedValue !== null) {
+          const element = document.getElementById(inputId);
+          if (element) {
+            if (element.type === 'checkbox') {
+              element.checked = savedValue === 'true';
+            } else if (element.tagName === 'SELECT') {
+              element.value = savedValue;
+            } else {
+              element.value = savedValue;
+            }
           }
         }
       }
-    }
 
-    // 保存所有输入框的值
-    function saveAllInputs() {
-      SAVED_INPUTS.forEach(saveInputValue);
-    }
+      // 保存所有输入框的值
+      function saveAllInputs() {
+        SAVED_INPUTS.forEach(saveInputValue);
+      }
 
-    // 恢复所有输入框的值
-    function restoreAllInputs() {
-      SAVED_INPUTS.forEach(restoreInputValue);
-    }
+      // 恢复所有输入框的值
+      function restoreAllInputs() {
+        SAVED_INPUTS.forEach(restoreInputValue);
+      }
 
-    // 重置所有输入框为默认值
-    function resetAllInputs() {
-      SAVED_INPUTS.forEach(inputId => {
-        const element = document.getElementById(inputId);
-        const defaultValue = DEFAULT_VALUES[inputId];
-        if (element && defaultValue !== undefined) {
-          if (element.type === 'checkbox') {
-            element.checked = defaultValue === 'true';
-          } else if (element.tagName === 'SELECT') {
-            element.value = defaultValue;
-          } else {
-            element.value = defaultValue;
-          }
-          // 保存重置后的值
-          saveInputValue(inputId);
-        }
-      });
-    }
-
-    // 初始化自动保存功能
-    function initAutoSave() {
-      // 页面加载时恢复保存的值
-      restoreAllInputs();
-
-      // 为所有需要保存的输入框添加事件监听器
-      SAVED_INPUTS.forEach(inputId => {
-        const element = document.getElementById(inputId);
-        if (element) {
-          const eventType = element.tagName === 'SELECT' ? 'change' : 'input';
-          element.addEventListener(eventType, () => {
+      // 重置所有输入框为默认值
+      function resetAllInputs() {
+        SAVED_INPUTS.forEach(inputId => {
+          const element = document.getElementById(inputId);
+          const defaultValue = DEFAULT_VALUES[inputId];
+          if (element && defaultValue !== undefined) {
+            if (element.type === 'checkbox') {
+              element.checked = defaultValue === 'true';
+            } else if (element.tagName === 'SELECT') {
+              element.value = defaultValue;
+            } else {
+              element.value = defaultValue;
+            }
+            // 保存重置后的值
             saveInputValue(inputId);
-          });
-        }
-      });
-    }
-
-    // —— 计算引擎（从 engine.js 精简内置）：
-    function to01(v){ return Math.max(0, Number(v)||0) / 100 }
-    function P(){
-      return {
-        sellingPrice: Number(document.getElementById('sellingPrice').value||0),
-        returnRate: to01(document.getElementById('returnRate').value),
-        costPrice: Number(document.getElementById('costPrice').value||0),
-        inputTaxRate: to01(document.getElementById('inputTaxRate').value),
-        outputTaxRate: to01(document.getElementById('outputTaxRate').value),
-        platformRate: to01(document.getElementById('platformRate').value),
-        shippingCost: Number(document.getElementById('shippingCost').value||0),
-        shippingInsurance: Number(document.getElementById('shippingInsurance').value||0),
-        otherCost: Number(document.getElementById('otherCost').value||0),
-        salesTaxRate: to01(document.getElementById('salesTaxRate').value),
-        serviceVATRate: to01(document.getElementById('serviceVATRate').value),
-        goodsMode: document.getElementById('goodsMode').value
+          }
+        });
       }
-    }
 
-    function computeBase(p){
-      const r = Math.max(0, 1 - p.returnRate);
-      const Rev = p.sellingPrice * r;
-      const goodsCost = p.costPrice * (1 + p.inputTaxRate) * (p.goodsMode === 'canReturn' ? r : 1);
-      const othersCost = p.shippingCost + p.shippingInsurance + p.otherCost;
-      const commission = p.sellingPrice * p.platformRate * r;
-      const VAT_out = Rev / (1 + p.salesTaxRate) * p.salesTaxRate;
-      const VAT_in_goods = p.costPrice * p.outputTaxRate * (p.goodsMode === 'canReturn' ? r : 1);
-      const VAT_in_comm = commission / (1 + p.serviceVATRate) * p.serviceVATRate;
-      const A = Rev - (goodsCost + othersCost + commission) - VAT_out + VAT_in_goods + VAT_in_comm;
-      const adCostBreakEven = (1 + p.serviceVATRate) * A;
-      const adRateBE_effective = Rev > 0 ? adCostBreakEven / Rev : NaN;
-      const ROI_BE_effective = adRateBE_effective > 0 ? 1 / adRateBE_effective : NaN;
-      const grossMarginRate = Rev>0 ? A/Rev : NaN;
-      return { r, Rev, A, adCostBreakEven, adRateBE_effective, ROI_BE_effective, grossMarginRate };
-    }
+      // 初始化自动保存功能
+      function initAutoSave() {
+        // 页面加载时恢复保存的值
+        restoreAllInputs();
 
-    function adRateToAmount(p, adRate, basis){
-      const r = Math.max(0, 1 - p.returnRate);
-      const base = basis === 'gmv' ? p.sellingPrice : (p.sellingPrice * r);
-      return base * adRate;
-    }
+        // 为所有需要保存的输入框添加事件监听器
+        SAVED_INPUTS.forEach(inputId => {
+          const element = document.getElementById(inputId);
+          if (element) {
+            const eventType = element.tagName === 'SELECT' ? 'change' : 'input';
+            element.addEventListener(eventType, () => {
+              saveInputValue(inputId);
+            });
+          }
+        });
+      }
 
-    function profitGivenAd(p, {adRate, basis='effective'}){
-      const r = Math.max(0, 1 - p.returnRate);
-      const Rev = p.sellingPrice * r;
-      const goodsCost = p.costPrice * (1 + p.inputTaxRate) * (p.goodsMode === 'canReturn' ? r : 1);
-      const othersCost = p.shippingCost + p.shippingInsurance + p.otherCost;
-      const commission = p.sellingPrice * p.platformRate * r;
-      const adCost = adRateToAmount(p, adRate, basis);
-      const VAT_out = Rev / (1 + p.salesTaxRate) * p.salesTaxRate;
-      const VAT_in_goods = p.costPrice * p.outputTaxRate * (p.goodsMode === 'canReturn' ? r : 1);
-      const VAT_in_comm = commission / (1 + p.serviceVATRate) * p.serviceVATRate;
-      const VAT_in_ad = adCost / (1 + p.serviceVATRate) * p.serviceVATRate;
-      const profit = Rev - (goodsCost + othersCost + commission + adCost) - VAT_out + VAT_in_goods + VAT_in_comm + VAT_in_ad;
-      const margin = Rev>0 ? profit/Rev : NaN;
-      return {profit, margin};
-    }
-
-    // —— UI计算 ——
-    function fmt(n, d=2){ if(!isFinite(n)) return '–'; return Number(n).toFixed(d) }
-    function recalc(){
-      const p = P();
-      const base = computeBase(p);
-      const AOV = p.sellingPrice; // AOV=售价
-      const cpc = Number(document.getElementById('cpc').value||0);
-      const cvr = to01(document.getElementById('cvr').value);
-
-      const beROAS = base.ROI_BE_effective; // 保本ROI
-      const beCPA  = base.adCostBreakEven / Math.max(1, 1); // 单件最大广告费（单笔下单）
-      // Max CPC 按“有效营收口径（含退货率）”
-      const maxCPC = beROAS>0 ? (cvr * AOV * (1 - p.returnRate)) / beROAS : NaN;
-      const curROAS = cpc>0 ? (cvr * AOV * (1 - p.returnRate)) / cpc : NaN;
-      // CVR 临界按“有效营收口径（含退货率）”
-      const cvrCrit = (AOV>0 && (1 - p.returnRate) > 0) ? (beROAS * cpc) / (AOV * (1 - p.returnRate)) : NaN; // 有效口径CVR临界
-      // const aovCrit = cvr>0 ? (beROAS * cpc) / cvr : NaN; // 需要达到的AOV
-
-      document.getElementById('beRoas').textContent = isFinite(beROAS) ? fmt(beROAS,2) + ' 倍' : '–';
-      // 利润率（含模拟广告）：将模拟 CPC/CVR 转换为有效口径的广告占比后，计算利润率
-      let profitRateText = '–';
-      if (isFinite(cvr) && cvr > 0) {
-        const rEff = Math.max(0, 1 - p.returnRate);
-        const CPA = cpc / cvr; // 单笔获客成本
-        const adRateSim = (p.sellingPrice > 0 && rEff > 0) ? (CPA / (p.sellingPrice * rEff)) : NaN; // 有效口径广告占比
-        const { margin } = profitGivenAd(p, { adRate: adRateSim, basis: 'effective' });
-        if (isFinite(margin)) {
-          profitRateText = (margin * 100).toFixed(2) + '%';
-          const el = document.getElementById('profitRate');
-          if (el) el.style.color = margin >= 0 ? 'var(--ok)' : 'var(--bad)';
+      // —— 计算引擎（从 engine.js 精简内置）：
+      function to01(v){ return Math.max(0, Number(v)||0) / 100 }
+      function P(){
+        return {
+          sellingPrice: Number(document.getElementById('sellingPrice').value||0),
+          returnRate: to01(document.getElementById('returnRate').value),
+          costPrice: Number(document.getElementById('costPrice').value||0),
+          inputTaxRate: to01(document.getElementById('inputTaxRate').value),
+          outputTaxRate: to01(document.getElementById('outputTaxRate').value),
+          platformRate: to01(document.getElementById('platformRate').value),
+          shippingCost: Number(document.getElementById('shippingCost').value||0),
+          shippingInsurance: Number(document.getElementById('shippingInsurance').value||0),
+          otherCost: Number(document.getElementById('otherCost').value||0),
+          salesTaxRate: to01(document.getElementById('salesTaxRate').value),
+          serviceVATRate: to01(document.getElementById('serviceVATRate').value),
+          goodsMode: document.getElementById('goodsMode').value
         }
       }
-      const prEl = document.getElementById('profitRate');
-      if (prEl) prEl.textContent = profitRateText;
-      document.getElementById('maxCpc').textContent = fmt(maxCPC,2);
 
-      // 根据真实ROI与保本ROI比较设置颜色
-      const curROASElement = document.getElementById('curROAS');
-      curROASElement.textContent = isFinite(curROAS) ? fmt(curROAS,2) + ' 倍' : '–';
-      if (isFinite(curROAS) && isFinite(beROAS)) {
-        curROASElement.style.color = curROAS >= beROAS ? 'var(--ok)' : 'var(--bad)';
-      } else {
-        curROASElement.style.color = 'var(--ink)'; // 默认颜色
+      function computeBase(p){
+        const r = Math.max(0, 1 - p.returnRate);
+        const Rev = p.sellingPrice * r;
+        const goodsCost = p.costPrice * (1 + p.inputTaxRate) * (p.goodsMode === 'canReturn' ? r : 1);
+        const othersCost = p.shippingCost + p.shippingInsurance + p.otherCost;
+        const commission = p.sellingPrice * p.platformRate * r;
+        const VAT_out = Rev / (1 + p.salesTaxRate) * p.salesTaxRate;
+        const VAT_in_goods = p.costPrice * p.outputTaxRate * (p.goodsMode === 'canReturn' ? r : 1);
+        const VAT_in_comm = commission / (1 + p.serviceVATRate) * p.serviceVATRate;
+        const A = Rev - (goodsCost + othersCost + commission) - VAT_out + VAT_in_goods + VAT_in_comm;
+        const adCostBreakEven = (1 + p.serviceVATRate) * A;
+        const adRateBE_effective = Rev > 0 ? adCostBreakEven / Rev : NaN;
+        const ROI_BE_effective = adRateBE_effective > 0 ? 1 / adRateBE_effective : NaN;
+        const grossMarginRate = Rev>0 ? A/Rev : NaN;
+        return { r, Rev, A, adCostBreakEven, adRateBE_effective, ROI_BE_effective, grossMarginRate };
       }
 
-      document.getElementById('cvrCrit').textContent = isFinite(cvrCrit)? ( (cvrCrit*100).toFixed(2)+'%' ) : '–';
-      // document.getElementById('aovCrit').textContent = fmt(aovCrit,2);
-      const beAdRate = base.adRateBE_effective; // 保本广告占比（有效）
-      document.getElementById('beAdRate').textContent = isFinite(beAdRate)? ((beAdRate*100).toFixed(2)+'%') : '–';
-    }
+      function adRateToAmount(p, adRate, basis){
+        const r = Math.max(0, 1 - p.returnRate);
+        const base = basis === 'gmv' ? p.sellingPrice : (p.sellingPrice * r);
+        return base * adRate;
+      }
 
-    function simulate(){
-      const p = P();
-      const adStart = to01(document.getElementById('adStart').value);
-      const adEnd = to01(document.getElementById('adEnd').value);
-      const adStep = to01(document.getElementById('adStep').value);
-      const rrStart = to01(document.getElementById('rrStart').value);
-      const rrEnd = to01(document.getElementById('rrEnd').value);
-      const rrStep = to01(document.getElementById('rrStep').value);
+      function profitGivenAd(p, {adRate, basis='effective'}){
+        const r = Math.max(0, 1 - p.returnRate);
+        const Rev = p.sellingPrice * r;
+        const goodsCost = p.costPrice * (1 + p.inputTaxRate) * (p.goodsMode === 'canReturn' ? r : 1);
+        const othersCost = p.shippingCost + p.shippingInsurance + p.otherCost;
+        const commission = p.sellingPrice * p.platformRate * r;
+        const adCost = adRateToAmount(p, adRate, basis);
+        const VAT_out = Rev / (1 + p.salesTaxRate) * p.salesTaxRate;
+        const VAT_in_goods = p.costPrice * p.outputTaxRate * (p.goodsMode === 'canReturn' ? r : 1);
+        const VAT_in_comm = commission / (1 + p.serviceVATRate) * p.serviceVATRate;
+        const VAT_in_ad = adCost / (1 + p.serviceVATRate) * p.serviceVATRate;
+        const profit = Rev - (goodsCost + othersCost + commission + adCost) - VAT_out + VAT_in_goods + VAT_in_comm + VAT_in_ad;
+        const margin = Rev>0 ? profit/Rev : NaN;
+        return {profit, margin};
+      }
 
-      // 生成头部（退货率行标题）
-      const rrs=[]; for(let r=rrStart; r<=rrEnd+1e-9; r+=rrStep){ rrs.push(Number(r.toFixed(6))) }
-      const ads=[]; for(let a=adStart; a<=adEnd+1e-9; a+=adStep){ ads.push(Number(a.toFixed(6))) }
+      // —— UI计算 ——
+      function fmt(n, d=2){ if(!isFinite(n)) return '–'; return Number(n).toFixed(d) }
+      function recalc(){
+        const p = P();
+        const base = computeBase(p);
+        const AOV = p.sellingPrice; // AOV=售价
+        const cpc = Number(document.getElementById('cpc').value||0);
+        const cvr = to01(document.getElementById('cvr').value);
 
-      let html = '<table><thead><tr><th>广告占比</th>' + rrs.map(r=>`<th><div class="th-top">退货率</div><div class="th-num">${(r*100).toFixed(1)}%</div></th>`).join('') + '</tr></thead><tbody>';
-      for(const a of ads){
-        html += `<tr><td>${(a*100).toFixed(0)}%</td>`;
-        for(const r of rrs){
-          const p2 = {...p, returnRate:r};
-          const {margin} = profitGivenAd(p2,{adRate:a,basis:'effective'});
-          const cls = margin>=0? 'pos' : 'neg';
-          html += `<td class="${cls}">${(margin*100).toFixed(1)}%</td>`
+        const beROAS = base.ROI_BE_effective; // 保本ROI
+        const beCPA  = base.adCostBreakEven / Math.max(1, 1); // 单件最大广告费（单笔下单）
+        // Max CPC 按“有效营收口径（含退货率）”
+        const maxCPC = beROAS>0 ? (cvr * AOV * (1 - p.returnRate)) / beROAS : NaN;
+        const curROAS = cpc>0 ? (cvr * AOV * (1 - p.returnRate)) / cpc : NaN;
+        // CVR 临界按“有效营收口径（含退货率）”
+        const cvrCrit = (AOV>0 && (1 - p.returnRate) > 0) ? (beROAS * cpc) / (AOV * (1 - p.returnRate)) : NaN; // 有效口径CVR临界
+        // const aovCrit = cvr>0 ? (beROAS * cpc) / cvr : NaN; // 需要达到的AOV
+
+        document.getElementById('beRoas').textContent = isFinite(beROAS) ? fmt(beROAS,2) + ' 倍' : '–';
+        // 利润率（含模拟广告）：将模拟 CPC/CVR 转换为有效口径的广告占比后，计算利润率
+        let profitRateText = '–';
+        if (isFinite(cvr) && cvr > 0) {
+          const rEff = Math.max(0, 1 - p.returnRate);
+          const CPA = cpc / cvr; // 单笔获客成本
+          const adRateSim = (p.sellingPrice > 0 && rEff > 0) ? (CPA / (p.sellingPrice * rEff)) : NaN; // 有效口径广告占比
+          const { margin } = profitGivenAd(p, { adRate: adRateSim, basis: 'effective' });
+          if (isFinite(margin)) {
+            profitRateText = (margin * 100).toFixed(2) + '%';
+            const el = document.getElementById('profitRate');
+            if (el) el.style.color = margin >= 0 ? 'var(--ok)' : 'var(--bad)';
+          }
         }
-        html += '</tr>'
+        const prEl = document.getElementById('profitRate');
+        if (prEl) prEl.textContent = profitRateText;
+        document.getElementById('maxCpc').textContent = fmt(maxCPC,2);
+
+        // 根据真实ROI与保本ROI比较设置颜色
+        const curROASElement = document.getElementById('curROAS');
+        curROASElement.textContent = isFinite(curROAS) ? fmt(curROAS,2) + ' 倍' : '–';
+        if (isFinite(curROAS) && isFinite(beROAS)) {
+          curROASElement.style.color = curROAS >= beROAS ? 'var(--ok)' : 'var(--bad)';
+        } else {
+          curROASElement.style.color = 'var(--ink)'; // 默认颜色
+        }
+
+        document.getElementById('cvrCrit').textContent = isFinite(cvrCrit)? ( (cvrCrit*100).toFixed(2)+'%' ) : '–';
+        // document.getElementById('aovCrit').textContent = fmt(aovCrit,2);
+        const beAdRate = base.adRateBE_effective; // 保本广告占比（有效）
+        document.getElementById('beAdRate').textContent = isFinite(beAdRate)? ((beAdRate*100).toFixed(2)+'%') : '–';
       }
-      html += '</tbody></table>';
-      document.getElementById('simTableWrap').innerHTML = html;
+
+      function simulate(){
+        const p = P();
+        const adStart = to01(document.getElementById('adStart').value);
+        const adEnd = to01(document.getElementById('adEnd').value);
+        const adStep = to01(document.getElementById('adStep').value);
+        const rrStart = to01(document.getElementById('rrStart').value);
+        const rrEnd = to01(document.getElementById('rrEnd').value);
+        const rrStep = to01(document.getElementById('rrStep').value);
+
+        // 生成头部（退货率行标题）
+        const rrs=[]; for(let r=rrStart; r<=rrEnd+1e-9; r+=rrStep){ rrs.push(Number(r.toFixed(6))) }
+        const ads=[]; for(let a=adStart; a<=adEnd+1e-9; a+=adStep){ ads.push(Number(a.toFixed(6))) }
+
+        let html = '<table><thead><tr><th>广告占比</th>' + rrs.map(r=>`<th><div class="th-top">退货率</div><div class="th-num">${(r*100).toFixed(1)}%</div></th>`).join('') + '</tr></thead><tbody>';
+        for(const a of ads){
+          html += `<tr><td>${(a*100).toFixed(0)}%</td>`;
+          for(const r of rrs){
+            const p2 = {...p, returnRate:r};
+            const {margin} = profitGivenAd(p2,{adRate:a,basis:'effective'});
+            const cls = margin>=0? 'pos' : 'neg';
+            html += `<td class="${cls}">${(margin*100).toFixed(1)}%</td>`
+          }
+          html += '</tr>'
+        }
+        html += '</tbody></table>';
+        document.getElementById('simTableWrap').innerHTML = html;
+        
+        // 添加表格悬停聚焦效果
+        addTableHoverEffects();
+      }
       
       // 添加表格悬停聚焦效果
-      addTableHoverEffects();
-    }
-    
-    // 添加表格悬停聚焦效果
-    function addTableHoverEffects() {
-      const table = document.querySelector('#simTableWrap table');
-      if (!table) return;
-      
-      const cells = table.querySelectorAll('td');
-      const headers = table.querySelectorAll('th');
-      
-      cells.forEach(cell => {
-        cell.addEventListener('mouseenter', function() {
-          // 获取当前单元格的行和列索引
-          const row = this.parentElement;
-          const colIndex = Array.from(row.children).indexOf(this);
-          
-          // 高亮当前行
-          row.classList.add('row-highlight');
-          
-          // 高亮当前列
-          const allRows = table.querySelectorAll('tr');
-          allRows.forEach(tr => {
-            const colCell = tr.children[colIndex];
-            if (colCell) {
-              colCell.classList.add('col-highlight');
-            }
+      function addTableHoverEffects() {
+        const table = document.querySelector('#simTableWrap table');
+        if (!table) return;
+        
+        const cells = table.querySelectorAll('td');
+        const headers = table.querySelectorAll('th');
+        
+        cells.forEach(cell => {
+          cell.addEventListener('mouseenter', function() {
+            // 获取当前单元格的行和列索引
+            const row = this.parentElement;
+            const colIndex = Array.from(row.children).indexOf(this);
+            
+            // 高亮当前行
+            row.classList.add('row-highlight');
+            
+            // 高亮当前列
+            const allRows = table.querySelectorAll('tr');
+            allRows.forEach(tr => {
+              const colCell = tr.children[colIndex];
+              if (colCell) {
+                colCell.classList.add('col-highlight');
+              }
+            });
+            
+            // 高亮当前单元格（颜色最深）
+            this.classList.add('cell-highlight');
           });
           
-          // 高亮当前单元格（颜色最深）
-          this.classList.add('cell-highlight');
-        });
-        
-        cell.addEventListener('mouseleave', function() {
-          // 移除所有高亮
-          const allRows = table.querySelectorAll('tr');
-          allRows.forEach(tr => {
-            tr.classList.remove('row-highlight');
-            tr.querySelectorAll('td, th').forEach(cell => {
-              cell.classList.remove('col-highlight', 'cell-highlight');
+          cell.addEventListener('mouseleave', function() {
+            // 移除所有高亮
+            const allRows = table.querySelectorAll('tr');
+            allRows.forEach(tr => {
+              tr.classList.remove('row-highlight');
+              tr.querySelectorAll('td, th').forEach(cell => {
+                cell.classList.remove('col-highlight', 'cell-highlight');
+              });
             });
           });
         });
-      });
-    }
-
-    // —— 金额精度工具（对齐 list_price.html 的“分/万分”算法） ——
-    function yuanToCents(y){
-      const s = String(y ?? '').trim();
-      if (!s) return 0;
-      const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
-      if (!m) return Math.round(Number(s) * 100);
-      const sign = m[1] === '-' ? -1 : 1;
-      const int = m[2];
-      const dec = (m[3] || '').padEnd(2, '0').slice(0, 2);
-      return sign * (parseInt(int, 10) * 100 + parseInt(dec || '0', 10));
-    }
-    function centsToYuan(c){ return (c/100).toFixed(2); }
-    function yuanToWu(y){ // 元→万分（1 元 = 10000 wu）
-      const s = String(y ?? '').trim();
-      if (!s) return 0;
-      const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
-      if (!m) return Math.round(Number(s) * 10000);
-      const sign = m[1] === '-' ? -1 : 1;
-      const int = m[2];
-      const dec = (m[3] || '').padEnd(4, '0').slice(0, 4);
-      return sign * (parseInt(int, 10) * 10000 + parseInt(dec || '0', 10));
-    }
-
-    // 给定标价（分）、立减比例 d（0~1）、额外折扣 fold（0~1），返回到手价（分）
-    function forwardNetSimple(listPriceCents, d, fold){
-      const priceWu = listPriceCents * 100; // 1 分 = 100 wu
-      const factor = Math.round((1 - d) * (fold>0? fold:1) * 10000); // 四位精度
-      const netWu = Math.floor(priceWu * factor / 10000); // 乘系数后向下取整到 wu
-      return Math.floor(netWu / 100); // 回到分，舍去 2 位之外的小数
-    }
-    // 四位小数精度：返回到手价（wu）用于“超额校正”
-    function forwardNetWuSimple(listPriceCents, d, fold){
-      const priceWu = listPriceCents * 100;
-      const factor = Math.round((1 - d) * (fold>0? fold:1) * 10000);
-      return Math.floor(priceWu * factor / 10000);
-    }
-    // 反解标价：给定目标到手价（分）求满足条件的最小标价（分），并做超额校正
-    function solveListPriceSimple(targetCents, d, fold){
-      if (!(targetCents > 0)) return 0;
-      let lo = targetCents;
-      let hi = Math.max(targetCents + 1, targetCents * 2 + 1000);
-      while (forwardNetSimple(hi, d, fold) < targetCents){
-        hi = Math.floor(hi * 1.5) + 1000;
-        if (hi > 1e9) break;
       }
-      while (lo < hi){
-        const mid = Math.floor((lo + hi) / 2);
-        const net = forwardNetSimple(mid, d, fold);
-        if (net >= targetCents) hi = mid; else lo = mid + 1;
-      }
-      let price = lo;
-      const targetWu = targetCents * 100;
-      let netWu = forwardNetWuSimple(price, d, fold);
-      while (price > 0 && netWu > targetWu){
-        price -= 1; // 每次减 1 分
-        netWu = forwardNetWuSimple(price, d, fold);
-      }
-      return price;
-    }
 
-    function lpCalc(){
-      const targetCents = yuanToCents(document.getElementById('lpTarget').value);
-      const d = to01(document.getElementById('lpDisc').value); // 立减（0~1）
-      const extraRaw = document.getElementById('lpExtra').value;
-      const fold = extraRaw ? (Number(extraRaw)/10) : 1; // 例如 9 → 0.9 折
-      const ansCents = solveListPriceSimple(targetCents, d, fold);
-      document.getElementById('lpPrice').textContent = ansCents ? centsToYuan(ansCents) : '–';
-    }
+      // —— 金额精度工具（对齐 list_price.html 的“分/万分”算法） ——
+      function yuanToCents(y){
+        const s = String(y ?? '').trim();
+        if (!s) return 0;
+        const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
+        if (!m) return Math.round(Number(s) * 100);
+        const sign = m[1] === '-' ? -1 : 1;
+        const int = m[2];
+        const dec = (m[3] || '').padEnd(2, '0').slice(0, 2);
+        return sign * (parseInt(int, 10) * 100 + parseInt(dec || '0', 10));
+      }
+      function centsToYuan(c){ return (c/100).toFixed(2); }
+      function yuanToWu(y){ // 元→万分（1 元 = 10000 wu）
+        const s = String(y ?? '').trim();
+        if (!s) return 0;
+        const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
+        if (!m) return Math.round(Number(s) * 10000);
+        const sign = m[1] === '-' ? -1 : 1;
+        const int = m[2];
+        const dec = (m[3] || '').padEnd(4, '0').slice(0, 4);
+        return sign * (parseInt(int, 10) * 10000 + parseInt(dec || '0', 10));
+      }
 
-    // 全局：输入框获得焦点自动全选；任何输入变化自动计算
-    function enableAutoSelectAndAutoCalc(){
-      const inputs = document.querySelectorAll('input');
-      inputs.forEach(el=>{
-        el.addEventListener('focus', e=>{ try{ e.target.select(); }catch(_){} });
-        el.addEventListener('input', ()=>{
-          recalc();
-          simulate();
-          if (el.closest('#lpOverlay')) { lpCalc(); }
+      // 给定标价（分）、立减比例 d（0~1）、额外折扣 fold（0~1），返回到手价（分）
+      function forwardNetSimple(listPriceCents, d, fold){
+        const priceWu = listPriceCents * 100; // 1 分 = 100 wu
+        const factor = Math.round((1 - d) * (fold>0? fold:1) * 10000); // 四位精度
+        const netWu = Math.floor(priceWu * factor / 10000); // 乘系数后向下取整到 wu
+        return Math.floor(netWu / 100); // 回到分，舍去 2 位之外的小数
+      }
+      // 四位小数精度：返回到手价（wu）用于“超额校正”
+      function forwardNetWuSimple(listPriceCents, d, fold){
+        const priceWu = listPriceCents * 100;
+        const factor = Math.round((1 - d) * (fold>0? fold:1) * 10000);
+        return Math.floor(priceWu * factor / 10000);
+      }
+      // 反解标价：给定目标到手价（分）求满足条件的最小标价（分），并做超额校正
+      function solveListPriceSimple(targetCents, d, fold){
+        if (!(targetCents > 0)) return 0;
+        let lo = targetCents;
+        let hi = Math.max(targetCents + 1, targetCents * 2 + 1000);
+        while (forwardNetSimple(hi, d, fold) < targetCents){
+          hi = Math.floor(hi * 1.5) + 1000;
+          if (hi > 1e9) break;
+        }
+        while (lo < hi){
+          const mid = Math.floor((lo + hi) / 2);
+          const net = forwardNetSimple(mid, d, fold);
+          if (net >= targetCents) hi = mid; else lo = mid + 1;
+        }
+        let price = lo;
+        const targetWu = targetCents * 100;
+        let netWu = forwardNetWuSimple(price, d, fold);
+        while (price > 0 && netWu > targetWu){
+          price -= 1; // 每次减 1 分
+          netWu = forwardNetWuSimple(price, d, fold);
+        }
+        return price;
+      }
+
+      function lpCalc(){
+        const targetCents = yuanToCents(document.getElementById('lpTarget').value);
+        const d = to01(document.getElementById('lpDisc').value); // 立减（0~1）
+        const extraRaw = document.getElementById('lpExtra').value;
+        const fold = extraRaw ? (Number(extraRaw)/10) : 1; // 例如 9 → 0.9 折
+        const ansCents = solveListPriceSimple(targetCents, d, fold);
+        document.getElementById('lpPrice').textContent = ansCents ? centsToYuan(ansCents) : '–';
+      }
+
+      // 全局：输入框获得焦点自动全选；任何输入变化自动计算
+      function enableAutoSelectAndAutoCalc(){
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(el=>{
+          el.addEventListener('focus', e=>{ try{ e.target.select(); }catch(_){} });
+          el.addEventListener('input', ()=>{
+            recalc();
+            simulate();
+            if (el.closest('#lpOverlay')) { lpCalc(); }
+          });
         });
+        const selects = document.querySelectorAll('select');
+        selects.forEach(el=>{
+          el.addEventListener('change', ()=>{ recalc(); simulate(); });
+        });
+      }
+
+      // 事件绑定
+      document.getElementById('recalcBtn').addEventListener('click', recalc);
+      document.getElementById('simBtn').addEventListener('click', simulate);
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        resetAllInputs();
+        recalc();
+        simulate();
+        lpCalc();
       });
-      const selects = document.querySelectorAll('select');
-      selects.forEach(el=>{
-        el.addEventListener('change', ()=>{ recalc(); simulate(); });
-      });
-    }
+      document.getElementById('openLP').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='flex'; lpCalc();});
+      document.getElementById('openCal').addEventListener('click', ()=>{ window.location.href='cal.html'; });
+      document.getElementById('lpClose').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='none'});
+      document.getElementById('lpCalc').addEventListener('click', lpCalc);
 
-    // 事件绑定
-    document.getElementById('recalcBtn').addEventListener('click', recalc);
-    document.getElementById('simBtn').addEventListener('click', simulate);
-    document.getElementById('resetBtn').addEventListener('click', () => {
-      resetAllInputs();
-      recalc();
-      simulate();
-      lpCalc();
-    });
-    document.getElementById('openLP').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='flex'; lpCalc();});
-    document.getElementById('openCal').addEventListener('click', ()=>{ window.location.href='cal.html'; });
-    document.getElementById('lpClose').addEventListener('click', ()=>{ document.getElementById('lpOverlay').style.display='none'});
-    document.getElementById('lpCalc').addEventListener('click', lpCalc);
+      // 初始化功能
+      initAutoSave(); // 初始化自动保存
+      enableAutoSelectAndAutoCalc(); // 初始化自动全选和计算
 
-    // 初始化功能
-    initAutoSave(); // 初始化自动保存
-    enableAutoSelectAndAutoCalc(); // 初始化自动全选和计算
-
-    // 首次自动计算
-    recalc(); simulate();
-  </script>
+      // 首次自动计算
+      recalc(); simulate();
+    </script>
+  </div>
 </body>
 </html>
