@@ -190,10 +190,11 @@
       .big-input .amount{font-size:calc(var(--base, 30px) + 6px)}
       .big-input .minor{font-size:calc(var(--base, 30px) - 8px)}
 
-      /* 移动端利润率选择器适配 */
+      /* 移动端利润率选择器适配 - 保持两列布局 */
       .margin-selector { padding: 14px; margin: 12px 0 }
-      .margin-options { grid-template-columns: 1fr; gap: 10px }
-      .option-content { padding: 14px 10px }
+      /* 移除单列设置，保持两列布局 */
+      /* .margin-options { grid-template-columns: 1fr; gap: 10px } */
+      .option-content { padding: 10px 8px }
       .option-value { font-size: 24px }
       .margin-label { font-size: 14px; margin-bottom: 10px }
 
@@ -275,7 +276,7 @@
 
       <!-- 右：计算结果 -->
       <section class="card">
-        <h2>结果与建议</h2>
+        <h2>结果与建议（价格已包含广告费预算）</h2>
         <div class="content">
           <!-- 1. 推算到手价（来源） -->
           <div>
@@ -464,12 +465,20 @@
 
     function roundUpTo_5_8_9_8(x){
       // 规则：向上取到以 .8 结尾的 5 或 9 位，如 65.8、69.8
+      // 新规则：如果推算的到手价便宜1元以内有最佳售价，则可以选择往下一档的售价
       const base10 = Math.floor(x / 10) * 10;
       const c58 = base10 + 5.8;
       const c98 = base10 + 9.8;
+      const nextBase58 = base10 + 10 + 5.8;
+      
+      // 如果价格刚好比某个档位高一点点（不超过1元），则选择往下一档
+      if (x > c58 && x <= c58 + 1) return c58;
+      if (x > c98 && x <= c98 + 1) return c98;
+      
+      // 原有逻辑：选择合适的档位
       if (x <= c58) return c58;
       if (x <= c98) return c98;
-      return base10 + 10 + 5.8; // 下一档 5.8
+      return nextBase58; // 下一档 5.8
     }
 
     function recalc(){
