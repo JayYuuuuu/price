@@ -58,6 +58,23 @@
     .kpi .val{margin-top:4px; font-size:18px; font-weight:700; font-family:var(--mono)}
 
     .note{font-size:12px; color:var(--muted)}
+    
+    /* 低调的清除按钮样式 */
+    .clear-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    
+    .clear-btn:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--bad);
+    }
 
     /* ===== 目标利润率选择器样式 ===== */
     .margin-selector {
@@ -182,7 +199,7 @@
 </head>
 <body>
   <header>
-    <h1>到手价与页面标价（独立页）</h1>
+    <h1>恒源祥售价计算（税务合规版）</h1>
     <div class="sub">已知成本与系统参数 → 推算合理到手价 → 建议价（.8 结尾）→ 页面标价（默认立减10%）</div>
   </header>
 
@@ -190,7 +207,7 @@
     <div class="wrap">
       <!-- 左：输入与固定参数展示 -->
       <section class="card">
-        <h2>参数与输入</h2>
+        <h2>参数与输入 <button class="clear-btn" id="clearBtn" title="清除所有保存的输入数据">恢复默认</button></h2>
         <div class="content">
           <div class="grid grid-3565">
             <div>
@@ -276,7 +293,7 @@
 
           <!-- 3. 页面标价（基于优惠反解） -->
           <div style="margin-top:14px">
-            <label>页面标价</label>
+            <label>页面标价（店铺优惠立减10%）</label>
             <div id="listPriceInput" class="big-input secondary asdiv">
               <span class="prefix">建议页面标价</span>
               <span id="listAmount" class="amount">—</span>
@@ -582,32 +599,6 @@
       }
     }
     
-    // 添加清除按钮到页面
-    function addClearButton() {
-      const header = document.querySelector('header');
-      const clearBtn = document.createElement('button');
-      clearBtn.textContent = '清除记忆';
-      clearBtn.style.cssText = `
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: #ff3b30;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-size: 12px;
-        cursor: pointer;
-        font-family: var(--sans);
-      `;
-      clearBtn.title = '清除所有保存的输入数据';
-      clearBtn.addEventListener('click', clearUserData);
-      
-      // 设置header为相对定位以便放置按钮
-      header.style.position = 'relative';
-      header.appendChild(clearBtn);
-    }
-
     // 事件绑定
     [inCost, selCate, ...document.querySelectorAll('input[name="targetM"]')].forEach(el=>{
       el.addEventListener('input', recalc);
@@ -620,10 +611,12 @@
         el.addEventListener('blur', saveUserData); // 失去焦点时保存
       }
     });
+    
+    // 为新的清除按钮添加事件监听器
+    document.getElementById('clearBtn').addEventListener('click', clearUserData);
 
     // 页面初始化
     function initPage() {
-      addClearButton();  // 添加清除按钮
       restoreUserData(); // 恢复用户数据
       recalc();         // 初次计算
     }
