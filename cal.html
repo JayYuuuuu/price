@@ -259,7 +259,7 @@
               <label>产品品类（预估退货率与广告占比）</label>
               <select id="cate">
                 <option value="" selected>请选择品类</option>
-                <option value="内裤|0.06|0.30">内裤（退货率预估 6%）</option>
+                <option value="内裤|0.06|0.30">内裤（退货率 6%）</option>
                 <option value="薄内衣|0.12|0.25">薄内衣（退货率预估 12%）</option>
                 <option value="夹棉空气层|0.25|0.25">夹棉空气层（退货率预估 25%）</option>
                 <option value="加绒内衣|0.20|0.25">加绒内衣（退货率预估 20%）</option>
@@ -488,9 +488,22 @@
     function parseCate(val){
       // 格式： 名称|退货率|广告占比
       const parts = String(val || '').split('|');
+      const name = parts[0] || '';
       const rr = parseFloat(parts[1] || '0') || 0; // 小数
-      const a = parseFloat(parts[2] || '0') || 0; // 小数（广告占比数值）
-      return { name: parts[0] || '', returnRate: rr, adRate: a };
+      let a = parseFloat(parts[2] || '0') || 0; // 小数（广告占比数值）
+      
+      // 新算法：针对内裤类目的广告占比动态调整
+      // 当内裤类目的进货价小于32.5元时，广告占比按30%预估
+      // 当进货价大于等于32.5元时，广告占比按25%预估
+      const costPrice = parseFloat(inCost.value) || 0;
+      if (name === '内裤') {
+        if (costPrice >= 32.5) {
+          a = 0.25; // 进货价>=32.5元时，内裤广告占比为25%
+        }
+        // 小于32.5元时保持原有的30%（无需修改）
+      }
+      
+      return { name, returnRate: rr, adRate: a };
     }
 
     function toCents(x){ return Math.round(Number(x || 0) * 100); }
@@ -659,6 +672,15 @@
       el.addEventListener('change', saveUserData);
       if (el.tagName === 'INPUT') {
         el.addEventListener('blur', saveUserData); // 失去焦点时保存
+      }
+    });
+    
+    // 进货价变化时特别处理内裤类目的广告占比调整
+    inCost.addEventListener('input', function() {
+      const currentCate = selCate.value;
+      if (currentCate && currentCate.startsWith('内裤|')) {
+        // 重新解析类目信息（会根据进货价调整广告占比）
+        recalc();
       }
     });
     
