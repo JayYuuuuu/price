@@ -515,11 +515,21 @@
       const base10 = Math.floor(x / 10) * 10;
       const c58 = base10 + 5.8;
       const c98 = base10 + 9.8;
+      const prevBase98 = base10 - 10 + 9.8; // 上一档的9.8
+      const prevBase58 = base10 - 10 + 5.8; // 上一档的5.8
       const nextBase58 = base10 + 10 + 5.8;
       
       // 如果价格刚好比某个档位高一点点（不超过1元），则选择往下一档
       if (x > c58 && x <= c58 + 1) return c58;
       if (x > c98 && x <= c98 + 1) return c98;
+      
+      // 新增：如果价格比某个档位低一点点（不超过1元），则选择往上一档
+      if (x < c58 && x >= c58 - 1) return c58;
+      if (x < c98 && x >= c98 - 1) return c98;
+      
+      // 检查上一档的价格，但必须在1元范围内
+      if (x >= prevBase98 && x <= prevBase98 + 1 && prevBase98 > 0) return prevBase98;
+      if (x >= prevBase58 && x <= prevBase58 + 1 && prevBase58 > 0) return prevBase58;
       
       // 原有逻辑：选择合适的档位
       if (x <= c58) return c58;
