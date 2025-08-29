@@ -46,9 +46,7 @@
     .big-input[readonly]{background:linear-gradient(180deg,#fafafa,#fff)}
     .big-input.asdiv{display:flex; align-items:baseline; justify-content:center; gap:10px}
     .big-input .minor{font-weight:700; color:#444; font-size:calc(var(--base, 46px) - 8px)}
-    .big-input .prefix,.big-input .suffix{font-weight:700; color:#444; font-size:calc(var(--base, 40px) - 10px)}
-    .big-input .amount{font-size:calc(var(--base, 40px) + 6px); font-weight:900; color:#111; letter-spacing:.5px}
-    /* 仅建议到手价输入框数字部分样式 */
+    .big-input .prefix,.big-input .suffix{font-weight:700; color:#333; font-size:calc(var(--base, 40px) - 10px)}
     .big-input.primary .amount{
       background: linear-gradient(180deg,#2c2c2e,#1c1c1e);
       color: #ffffff;
@@ -56,6 +54,7 @@
       padding: 0 8px;
       box-shadow: 0 0 0 1px rgba(255,255,255,.15);
     }
+    .big-input .amount{font-size:calc(var(--base, 40px) + 6px); font-weight:900; color:#111; letter-spacing:.5px}
     .big.hint{font-size:13px; color:var(--muted); padding:0; margin-top:6px; display:none}
     .muted{color:var(--muted)}
     .step{font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.2px}
@@ -189,6 +188,39 @@
       .big-input .prefix,.big-input .suffix{font-size:calc(var(--base, 30px) - 10px)}
       .big-input .amount{font-size:calc(var(--base, 30px) + 6px)}
       .big-input .minor{font-size:calc(var(--base, 30px) - 8px)}
+      
+      /* 手机端到手价输入框多行布局 */
+      .big-input.asdiv {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+      }
+      .big-input .prefix {
+        display: block;
+        white-space: nowrap;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: -2px;
+      }
+      .big-input .amount {
+        display: block;
+        font-size: 36px;
+        line-height: 1.1;
+        padding: 2px 12px;
+      }
+      .big-input .suffix {
+        display: block;
+        white-space: nowrap;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: -2px;
+      }
+      .big-input .minor {
+        display: block;
+        font-size: 12px;
+        margin-top: 2px;
+      }
 
       /* 移动端利润率选择器适配 - 保持两列布局 */
       .margin-selector { padding: 14px; margin: 12px 0 }
