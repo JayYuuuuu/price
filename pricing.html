@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>标价计算器 - 移动端</title>
+  <meta name="description" content="电商标价计算工具，根据目标到手价反推页面标价，支持立减和单件打折设置" />
+  <style>
+    :root {
+      --bg: #F5F5F7;
+      --card: #FFFFFF;
+      --ink: #111111;
+      --muted: #6e6e73;
+      --accent: #007aff;
+      --ok: #34c759;
+      --warn: #ff9f0a;
+      --bad: #ff3b30;
+      --radius: 16px;
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 20px 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid #e5e5ea;
+      background: linear-gradient(180deg, #fafafa, #fff);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    /* 输入区域样式 */
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .big-input {
+      width: 100%;
+      padding: 20px 16px;
+      border: 2px solid #e5e5ea;
+      border-radius: var(--radius);
+      font-size: 32px;
+      font-weight: 800;
+      text-align: center;
+      outline: none;
+      background: #fff;
+      transition: all 0.2s ease;
+      font-family: "SF Pro Display", "SF Pro Text", var(--sans);
+    }
+
+    .big-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(0,122,255,0.12);
+    }
+
+    .big-input.readonly {
+      background: linear-gradient(180deg, #fafafa, #fff);
+      border-color: #e5e5ea;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    /* 结果展示样式 */
+    .result-card {
+      background: linear-gradient(135deg, #f0f7ff 0%, #fff 100%);
+      border: 2px solid #e1e5f2;
+    }
+
+    .result-value {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--accent);
+      text-align: center;
+      letter-spacing: 1px;
+      margin: 16px 0;
+      text-shadow: 0 1px 2px rgba(0,122,255,0.1);
+    }
+
+    .result-desc {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* 参数设置区域 */
+    .params-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .param-input {
+      width: 100%;
+      padding: 16px 12px;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      outline: none;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .param-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,122,255,0.12);
+    }
+
+    .param-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* 按钮样式 */
+    .btn {
+      width: 100%;
+      padding: 18px 20px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: var(--accent);
+      color: #fff;
+      margin-top: 24px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:hover {
+      background: #0056cc;
+    }
+
+    /* 说明文本 */
+    .hint {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+    }
+
+    /* 历史记录样式 */
+    .history-section {
+      margin-top: 24px;
+    }
+
+    .history-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .history-value {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .clear-history {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    .clear-history:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--bad);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 360px) {
+      .container {
+        padding: 12px;
+      }
+
+      header {
+        padding: 16px 0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .card-content {
+        padding: 16px;
+      }
+
+      .big-input {
+        font-size: 28px;
+        padding: 16px 12px;
+      }
+
+      .result-value {
+        font-size: 40px;
+      }
+
+      .param-input {
+        font-size: 16px;
+        padding: 12px 10px;
+      }
+
+      .params-grid {
+        gap: 12px;
+      }
+    }
+
+    /* 加载动画 */
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* 成功动画 */
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .success-animation {
+      animation: successPulse 0.3s ease;
+    }
+
+    /* 数字键盘优化 */
+    input[type="number"] {
+      appearance: textfield;
+      -webkit-appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      appearance: none;
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* 防止iOS缩放 */
+    input[type="text"],
+    input[type="number"] {
+      font-size: 38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>标价计算器</h1>
+      <div class="subtitle">根据目标到手价反推最优页面标价<br>支持立减和单件打折设置</div>
+    </header>
+
+    <!-- 输入区域 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">目标设置</div>
+        <div class="card-desc">输入您期望的到手价，系统将自动计算对应的页面标价</div>
+      </div>
+      <div class="card-content">
+        <div class="input-group">
+          <label>目标到手价（元）</label>
+          <input type="number" id="targetPrice" class="big-input" placeholder="69.80" value="69.80" step="0.01" inputmode="decimal" />
+        </div>
+
+        <div class="params-grid">
+          <div>
+            <div class="param-label">日常立减（%）</div>
+            <input type="number" id="discountRate" class="param-input" placeholder="10" value="10" step="0.01" min="0" max="100" />
+          </div>
+          <div>
+            <div class="param-label">单件打折（可选）</div>
+            <input type="number" id="extraDiscount" class="param-input" placeholder="9" step="0.01" min="0" max="10" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 结果展示 -->
+    <div class="card result-card">
+      <div class="card-header">
+        <div class="card-title">计算结果</div>
+        <div class="card-desc">系统推荐的页面标价</div>
+      </div>
+      <div class="card-content">
+        <div class="result-value" id="resultPrice">—</div>
+        <div class="result-desc" id="resultDesc">请输入目标到手价开始计算</div>
+      </div>
+    </div>
+
+    <!-- 计算按钮 -->
+    <button class="btn" id="calculateBtn">立即计算</button>
+
+    <!-- 使用说明 -->
+    <div class="card">
+      <div class="card-content">
+        <div class="hint">
+          <strong>计算规则：</strong><br>
+          页面标价 × (1 − 立减%) × (单件打折/10) = 到手价<br><br>
+          <strong>使用建议：</strong><br>
+          • 日常立减通常为店铺通用优惠<br>
+          • 单件打折为活动期间的额外折扣<br>
+          • 如果只有立减，单件打折可留空
+        </div>
+      </div>
+    </div>
+
+    <!-- 历史记录 -->
+    <div class="history-section" id="historySection" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">计算历史</div>
+          <div class="card-desc">最近的计算记录</div>
+        </div>
+        <div class="card-content">
+          <div id="historyList"></div>
+          <button class="clear-history" id="clearHistoryBtn">清除历史</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 标价计算核心函数 =====
+
+    // 金额精度工具（分/万分）
+    function yuanToCents(y) {
+      const s = String(y ?? '').trim();
+      if (!s) return 0;
+      const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
+      if (!m) return Math.round(Number(s) * 100);
+      const sign = m[1] === '-' ? -1 : 1;
+      const int = m[2];
+      const dec = (m[3] || '').padEnd(2, '0').slice(0, 2);
+      return sign * (parseInt(int, 10) * 100 + parseInt(dec || '0', 10));
+    }
+
+    function centsToYuan(c) {
+      return (c / 100).toFixed(2);
+    }
+
+    function yuanToWu(y) { // 元→万分（1 元 = 10000 wu）
+      const s = String(y ?? '').trim();
+      if (!s) return 0;
+      const m = s.match(/^(-?)(\d+)(?:\.(\d{0,}))?$/);
+      if (!m) return Math.round(Number(s) * 10000);
+      const sign = m[1] === '-' ? -1 : 1;
+      const int = m[2];
+      const dec = (m[3] || '').padEnd(4, '0').slice(0, 4);
+      return sign * (parseInt(int, 10) * 10000 + parseInt(dec || '0', 10));
+    }
+
+    // 给定标价（分）、立减比例 d（0~1）、额外折扣 fold（0~1），返回到手价（分）
+    function forwardNetSimple(listPriceCents, d, fold) {
+      const priceWu = listPriceCents * 100; // 1 分 = 100 wu
+      const factor = Math.round((1 - d) * (fold > 0 ? fold : 1) * 10000); // 四位精度
+      const netWu = Math.floor(priceWu * factor / 10000); // 乘系数后向下取整到 wu
+      return Math.floor(netWu / 100); // 回到分，舍去 2 位之外的小数
+    }
+
+    // 四位小数精度：返回到手价（wu）用于"超额校正"
+    function forwardNetWuSimple(listPriceCents, d, fold) {
+      const priceWu = listPriceCents * 100;
+      const factor = Math.round((1 - d) * (fold > 0 ? fold : 1) * 10000);
+      return Math.floor(priceWu * factor / 10000);
+    }
+
+    // 反解标价：给定目标到手价（分）求满足条件的最小标价（分），并做超额校正
+    function solveListPriceSimple(targetCents, d, fold) {
+      if (!(targetCents > 0)) return 0;
+      let lo = targetCents;
+      let hi = Math.max(targetCents + 1, targetCents * 2 + 1000);
+      while (forwardNetSimple(hi, d, fold) < targetCents) {
+        hi = Math.floor(hi * 1.5) + 1000;
+        if (hi > 1e9) break;
+      }
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        const net = forwardNetSimple(mid, d, fold);
+        if (net >= targetCents) hi = mid; else lo = mid + 1;
+      }
+      let price = lo;
+      const targetWu = targetCents * 100;
+      let netWu = forwardNetWuSimple(price, d, fold);
+      while (price > 0 && netWu > targetWu) {
+        price -= 1; // 每次减 1 分
+        netWu = forwardNetWuSimple(price, d, fold);
+      }
+      return price;
+    }
+
+    // ===== 主计算函数 =====
+    function calculatePricing() {
+      const targetPrice = parseFloat(document.getElementById('targetPrice').value);
+      const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+      const extraDiscount = document.getElementById('extraDiscount').value;
+
+      const resultElement = document.getElementById('resultPrice');
+      const descElement = document.getElementById('resultDesc');
+
+      // 输入验证
+      if (!targetPrice || targetPrice <= 0) {
+        resultElement.textContent = '—';
+        descElement.textContent = '请输入有效的目标到手价';
+        return;
+      }
+
+      if (discountRate < 0 || discountRate > 100) {
+        resultElement.textContent = '—';
+        descElement.textContent = '立减百分比应在 0-100 之间';
+        return;
+      }
+
+      // 计算参数
+      const targetCents = yuanToCents(targetPrice);
+      const d = discountRate / 100; // 转换为小数
+      const fold = extraDiscount ? (parseFloat(extraDiscount) / 10) : 1; // 例如 9 → 0.9
+
+      // 计算标价
+      const listPriceCents = solveListPriceSimple(targetCents, d, fold);
+      const listPrice = parseFloat(centsToYuan(listPriceCents));
+
+      // 显示结果
+      resultElement.textContent = listPrice.toFixed(2);
+      resultElement.classList.add('success-animation');
+
+      // 生成描述
+      let desc = `目标到手价 ¥${targetPrice.toFixed(2)}`;
+      if (d > 0) {
+        desc += `，立减 ${discountRate}%`;
+      }
+      if (extraDiscount && parseFloat(extraDiscount) !== 10) {
+        desc += `，${extraDiscount} 折`;
+      }
+      descElement.textContent = desc;
+
+      // 保存到历史记录
+      saveToHistory(targetPrice, listPrice, discountRate, extraDiscount);
+
+      // 移除动画类
+      setTimeout(() => {
+        resultElement.classList.remove('success-animation');
+      }, 300);
+    }
+
+    // ===== 历史记录功能 =====
+    function saveToHistory(targetPrice, listPrice, discountRate, extraDiscount) {
+      const history = getHistory();
+      const record = {
+        id: Date.now(),
+        targetPrice: targetPrice,
+        listPrice: listPrice,
+        discountRate: discountRate,
+        extraDiscount: extraDiscount || '',
+        timestamp: new Date().toLocaleString('zh-CN')
+      };
+
+      history.unshift(record);
+      // 只保留最近10条记录
+      if (history.length > 10) {
+        history.splice(10);
+      }
+
+      localStorage.setItem('pricing_history', JSON.stringify(history));
+      updateHistoryDisplay();
+    }
+
+    function getHistory() {
+      try {
+        const history = localStorage.getItem('pricing_history');
+        return history ? JSON.parse(history) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function updateHistoryDisplay() {
+      const history = getHistory();
+      const historySection = document.getElementById('historySection');
+      const historyList = document.getElementById('historyList');
+
+      if (history.length === 0) {
+        historySection.style.display = 'none';
+        return;
+      }
+
+      historySection.style.display = 'block';
+      historyList.innerHTML = history.map(record => `
+        <div class="history-item">
+          <div>
+            <div>目标: ¥${record.targetPrice.toFixed(2)}</div>
+            <div style="font-size: 12px; color: var(--muted);">
+              ${record.discountRate > 0 ? `立减${record.discountRate}%` : ''}
+              ${record.extraDiscount ? ` ${record.extraDiscount}折` : ''}
+              · ${record.timestamp}
+            </div>
+          </div>
+          <div class="history-value">¥${record.listPrice.toFixed(2)}</div>
+        </div>
+      `).join('');
+    }
+
+    function clearHistory() {
+      localStorage.removeItem('pricing_history');
+      updateHistoryDisplay();
+    }
+
+    // ===== 自动保存输入值 =====
+    function saveInputValue(inputId) {
+      const element = document.getElementById(inputId);
+      if (element) {
+        localStorage.setItem(`pricing_${inputId}`, element.value);
+      }
+    }
+
+    function restoreInputValue(inputId) {
+      const savedValue = localStorage.getItem(`pricing_${inputId}`);
+      if (savedValue !== null) {
+        const element = document.getElementById(inputId);
+        if (element) {
+          element.value = savedValue;
+        }
+      }
+    }
+
+    // ===== 事件绑定 =====
+    document.addEventListener('DOMContentLoaded', function() {
+      // 恢复保存的输入值
+      ['targetPrice', 'discountRate', 'extraDiscount'].forEach(restoreInputValue);
+
+      // 更新历史记录显示
+      updateHistoryDisplay();
+
+      // 页面加载完成后自动计算（如果有默认值）
+      setTimeout(() => {
+        const targetPrice = document.getElementById('targetPrice').value;
+        if (targetPrice && !isNaN(parseFloat(targetPrice)) && parseFloat(targetPrice) > 0) {
+          calculatePricing();
+        }
+      }, 100);
+
+      // 输入框自动全选
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('focus', function() {
+          setTimeout(() => this.select(), 10);
+        });
+
+        // 实时保存输入值
+        input.addEventListener('input', function() {
+          saveInputValue(this.id);
+        });
+      });
+
+      // 计算按钮
+      document.getElementById('calculateBtn').addEventListener('click', calculatePricing);
+
+      // 清除历史按钮
+      document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+      // 回车键计算
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          calculatePricing();
+        }
+      });
+
+      // 输入变化时自动计算（立即执行）
+      let calcTimeout;
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function() {
+          clearTimeout(calcTimeout);
+          // 立即计算，但对于快速连续输入做轻微防抖
+          calcTimeout = setTimeout(() => {
+            const targetPrice = document.getElementById('targetPrice').value;
+            // 只有当目标价格有值且为有效数字时才计算
+            if (targetPrice && !isNaN(parseFloat(targetPrice)) && parseFloat(targetPrice) > 0) {
+              calculatePricing();
+            }
+          }, 50); // 减少到50ms，几乎是立即响应
+        });
+      });
+    });
+  </script>
+</body>
+</html>
