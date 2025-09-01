@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>标价计算器 - 移动端</title>
-  <meta name="description" content="电商标价计算工具，根据目标到手价反推页面标价，支持立减和单件打折设置" />
+  <meta name="description" content="根据目标到手价反推页面标价" />
   <style>
     :root {
       --bg: #F5F5F7;
@@ -121,7 +121,6 @@
       outline: none;
       background: #fff;
       transition: all 0.2s ease;
-      font-family: "SF Pro Display", "SF Pro Text", var(--sans);
     }
 
     .big-input:focus {
@@ -356,7 +355,6 @@
   <div class="container">
     <header>
       <h1>标价计算器</h1>
-      <div class="subtitle">根据目标到手价反推最优页面标价<br>支持立减和单件打折设置</div>
     </header>
 
     <!-- 输入区域 -->
@@ -418,7 +416,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title">计算历史</div>
-          <div class="card-desc">最近的计算记录</div>
+          <div class="card-desc">最近的计算记录（保留10条）</div>
         </div>
         <div class="card-content">
           <div id="historyList"></div>
@@ -589,10 +587,18 @@
 
       if (history.length === 0) {
         historySection.style.display = 'none';
+        // 重置标题
+        const titleElement = historySection.querySelector('.card-title');
+        titleElement.textContent = '计算历史';
         return;
       }
 
       historySection.style.display = 'block';
+
+      // 更新标题显示记录数量
+      const titleElement = historySection.querySelector('.card-title');
+      titleElement.textContent = `计算历史 (${history.length}/10)`;
+
       historyList.innerHTML = history.map(record => `
         <div class="history-item">
           <div>
