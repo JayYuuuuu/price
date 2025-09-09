@@ -64,6 +64,14 @@
     .kpi .lab{font-size:12px; color:var(--muted)}
     .kpi .val{margin-top:4px; font-size:18px; font-weight:500; font-family:var(--mono);color: #444444;}
 
+    /* 参数输入框样式 */
+    .params-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px}
+    .param-group{display:flex; flex-direction:column}
+    .param-group label{font-size:11px; color:var(--muted); margin-bottom:6px; font-weight:500; text-align:center}
+    .param-group input{width:100%; padding:8px 6px; border:1px solid #d2d2d7; border-radius:8px; font-weight:600; text-align:center; outline:none; background:#fff}
+    .param-group input:focus{border-color:var(--accent); box-shadow:0 0 0 2px rgba(0,122,255,.12)}
+    .param-group input[type="number"]{font-family:var(--mono)}
+
     .note{font-size:12px; color:var(--muted)}
     
     /* 低调的清除按钮样式 */
@@ -235,6 +243,11 @@
       .kpi .item { padding: 8px 6px }
       .kpi .lab { font-size: 11px; line-height: 1.2 }
       .kpi .val { font-size: 13px; margin-top: 2px }
+
+      /* 移动端参数输入框适配 - 保持4列布局 */
+      .params-grid { grid-template-columns: repeat(4, 1fr); gap: 8px }
+      .param-group input { font-size: 12px; padding: 6px 4px }
+      .param-group label { font-size: 10px; margin-bottom: 3px }
     }
   </style>
 </head>
@@ -292,16 +305,43 @@
           </div>
 
           <div class="block" style="margin-top:12px">
-            <div class="note">系统默认参数 | 均以含税价为口径（不可修改，用于参与计算）：</div>
-            <div class="kpi" style="margin-top:8px">
-              <div class="item"><div class="lab">销项税率</div><div class="val" id="k_sales">13%</div></div>
-              <div class="item"><div class="lab">商品进项税率</div><div class="val" id="k_output">13%</div></div>
-              <div class="item"><div class="lab">开票成本比例</div><div class="val" id="k_input">6%</div></div>
-              <div class="item"><div class="lab">服务费税率（佣金/广告）</div><div class="val" id="k_svat">6%</div></div>
-              <div class="item"><div class="lab">平台佣金率</div><div class="val" id="k_comm">5.5%</div></div>
-              <div class="item"><div class="lab">物流费</div><div class="val" id="k_ship">¥2.80</div></div>
-              <div class="item"><div class="lab">运费险</div><div class="val" id="k_ins">¥1.50</div></div>
-              <div class="item"><div class="lab">其他成本</div><div class="val" id="k_other">¥2.50</div></div>
+            <div class="note">系统参数设置 | 均以含税价为口径（可修改，用于参与计算）：</div>
+            <div class="params-grid" style="margin-top:8px">
+              <div class="param-group">
+                <label>销项税率（%）</label>
+                <input id="salesTaxRate" type="number" step="0.1" min="0" max="100" value="13" placeholder="13" />
+              </div>
+              <div class="param-group">
+                <label>商品进项税率（%）</label>
+                <input id="outputTaxRate" type="number" step="0.1" min="0" max="100" value="13" placeholder="13" />
+              </div>
+              <div class="param-group">
+                <label>开票成本比例（%）</label>
+                <input id="inputTaxRate" type="number" step="0.1" min="0" max="100" value="6" placeholder="6" />
+              </div>
+              <div class="param-group">
+                <label>服务费税率（%）</label>
+                <input id="serviceVATRate" type="number" step="0.1" min="0" max="100" value="6" placeholder="6" />
+              </div>
+              <div class="param-group">
+                <label>平台佣金率（%）</label>
+                <input id="platformRate" type="number" step="0.1" min="0" max="100" value="5.5" placeholder="5.5" />
+              </div>
+              <div class="param-group">
+                <label>物流费（元）</label>
+                <input id="shippingCost" type="number" step="0.1" min="0" value="2.8" placeholder="2.8" />
+              </div>
+              <div class="param-group">
+                <label>运费险（元）</label>
+                <input id="shippingInsurance" type="number" step="0.1" min="0" value="1.5" placeholder="1.5" />
+              </div>
+              <div class="param-group">
+                <label>其他成本（元）</label>
+                <input id="otherCost" type="number" step="0.1" min="0" value="2.5" placeholder="2.5" />
+              </div>
+            </div>
+            <div style="margin-top:12px; text-align:center">
+              <button class="clear-btn" id="resetParamsBtn" title="恢复系统默认参数">恢复默认参数</button>
             </div>
           </div>
         </div>
@@ -456,8 +496,8 @@
       return price;
     }
 
-    // 固定系统参数（不可编辑）
-    const SYSTEM = {
+    // 系统参数默认值（可编辑）
+    const SYSTEM_DEFAULTS = {
       salesTaxRate: 0.13,       // 销项税率 13%
       outputTaxRate: 0.13,      // 商品进项税率 13%
       inputTaxRate: 0.06,       // 开票成本比例 6%
@@ -468,6 +508,69 @@
       otherCost: 2.5,
       goodsMode: 'canReturn'
     };
+
+    // 从输入框获取系统参数的函数，包含参数验证
+    function getSystemParams() {
+      const params = {
+        salesTaxRate: parseFloat($('salesTaxRate').value) / 100,
+        outputTaxRate: parseFloat($('outputTaxRate').value) / 100,
+        inputTaxRate: parseFloat($('inputTaxRate').value) / 100,
+        serviceVATRate: parseFloat($('serviceVATRate').value) / 100,
+        platformRate: parseFloat($('platformRate').value) / 100,
+        shippingCost: parseFloat($('shippingCost').value),
+        shippingInsurance: parseFloat($('shippingInsurance').value),
+        otherCost: parseFloat($('otherCost').value),
+        goodsMode: SYSTEM_DEFAULTS.goodsMode
+      };
+
+      // 参数验证和默认值回退
+      const validatedParams = {
+        salesTaxRate: (params.salesTaxRate >= 0 && params.salesTaxRate <= 1) ? params.salesTaxRate : SYSTEM_DEFAULTS.salesTaxRate,
+        outputTaxRate: (params.outputTaxRate >= 0 && params.outputTaxRate <= 1) ? params.outputTaxRate : SYSTEM_DEFAULTS.outputTaxRate,
+        inputTaxRate: (params.inputTaxRate >= 0 && params.inputTaxRate <= 1) ? params.inputTaxRate : SYSTEM_DEFAULTS.inputTaxRate,
+        serviceVATRate: (params.serviceVATRate >= 0 && params.serviceVATRate <= 1) ? params.serviceVATRate : SYSTEM_DEFAULTS.serviceVATRate,
+        platformRate: (params.platformRate >= 0 && params.platformRate <= 1) ? params.platformRate : SYSTEM_DEFAULTS.platformRate,
+        shippingCost: (params.shippingCost >= 0) ? params.shippingCost : SYSTEM_DEFAULTS.shippingCost,
+        shippingInsurance: (params.shippingInsurance >= 0) ? params.shippingInsurance : SYSTEM_DEFAULTS.shippingInsurance,
+        otherCost: (params.otherCost >= 0) ? params.otherCost : SYSTEM_DEFAULTS.otherCost,
+        goodsMode: SYSTEM_DEFAULTS.goodsMode
+      };
+
+      return validatedParams;
+    }
+
+    // 参数验证和错误提示函数
+    function validateParams() {
+      const errors = [];
+      const paramNames = {
+        salesTaxRate: '销项税率',
+        outputTaxRate: '商品进项税率', 
+        inputTaxRate: '开票成本比例',
+        serviceVATRate: '服务费税率',
+        platformRate: '平台佣金率',
+        shippingCost: '物流费',
+        shippingInsurance: '运费险',
+        otherCost: '其他成本'
+      };
+
+      // 检查百分比参数（0-100%）
+      ['salesTaxRate', 'outputTaxRate', 'inputTaxRate', 'serviceVATRate', 'platformRate'].forEach(id => {
+        const value = parseFloat($(id).value);
+        if (isNaN(value) || value < 0 || value > 100) {
+          errors.push(`${paramNames[id]}应在0-100之间`);
+        }
+      });
+
+      // 检查金额参数（>=0）
+      ['shippingCost', 'shippingInsurance', 'otherCost'].forEach(id => {
+        const value = parseFloat($(id).value);
+        if (isNaN(value) || value < 0) {
+          errors.push(`${paramNames[id]}不能为负数`);
+        }
+      });
+
+      return errors;
+    }
 
     const $ = id => document.getElementById(id);
     const fmt2 = n => (isFinite(n) ? Number(n).toFixed(2) : '—');
@@ -564,20 +667,23 @@
 
       const r = Math.max(0, 1 - cate.returnRate);
 
+      // 获取当前系统参数
+      const systemParams = getSystemParams();
+
       // 构造参数：售价未知，仅用于公式中的成本项
       const baseParams = {
         sellingPrice: 0, // solveSellingPrice 不依赖该值
         returnRate: cate.returnRate,
         costPrice: cost,
-        inputTaxRate: SYSTEM.inputTaxRate,
-        outputTaxRate: SYSTEM.outputTaxRate,
-        platformRate: SYSTEM.platformRate,
-        shippingCost: SYSTEM.shippingCost,
-        shippingInsurance: SYSTEM.shippingInsurance,
-        otherCost: SYSTEM.otherCost,
-        salesTaxRate: SYSTEM.salesTaxRate,
-        serviceVATRate: SYSTEM.serviceVATRate,
-        goodsMode: SYSTEM.goodsMode
+        inputTaxRate: systemParams.inputTaxRate,
+        outputTaxRate: systemParams.outputTaxRate,
+        platformRate: systemParams.platformRate,
+        shippingCost: systemParams.shippingCost,
+        shippingInsurance: systemParams.shippingInsurance,
+        otherCost: systemParams.otherCost,
+        salesTaxRate: systemParams.salesTaxRate,
+        serviceVATRate: systemParams.serviceVATRate,
+        goodsMode: systemParams.goodsMode
       };
 
       // 到手价：按广告占比（有效营收口径）与目标利润率反解
@@ -614,6 +720,7 @@
 
     // ===== 本地存储功能 =====
     const STORAGE_KEY = 'listprice_user_data';
+    const PARAMS_STORAGE_KEY = 'listprice_system_params';
     
     // 保存用户数据到本地存储
     function saveUserData() {
@@ -626,6 +733,70 @@
       } catch (e) {
         console.warn('本地存储失败:', e);
       }
+    }
+
+    // 保存系统参数到本地存储
+    function saveSystemParams() {
+      const params = {
+        salesTaxRate: $('salesTaxRate').value,
+        outputTaxRate: $('outputTaxRate').value,
+        inputTaxRate: $('inputTaxRate').value,
+        serviceVATRate: $('serviceVATRate').value,
+        platformRate: $('platformRate').value,
+        shippingCost: $('shippingCost').value,
+        shippingInsurance: $('shippingInsurance').value,
+        otherCost: $('otherCost').value
+      };
+      try {
+        localStorage.setItem(PARAMS_STORAGE_KEY, JSON.stringify(params));
+        console.log('系统参数已保存:', params);
+      } catch (e) {
+        console.warn('系统参数存储失败:', e);
+      }
+    }
+
+    // 恢复系统参数
+    function restoreSystemParams() {
+      try {
+        const saved = localStorage.getItem(PARAMS_STORAGE_KEY);
+        if (saved) {
+          const params = JSON.parse(saved);
+          console.log('从本地存储读取的参数:', params);
+          
+          Object.keys(params).forEach(key => {
+            const element = $(key);
+            if (element && params[key] !== undefined && params[key] !== '') {
+              element.value = params[key];
+              console.log(`恢复参数 ${key}: ${params[key]}`);
+            }
+          });
+          console.log('已从本地存储恢复系统参数');
+        } else {
+          console.log('没有找到保存的系统参数，使用默认值');
+        }
+      } catch (e) {
+        console.warn('恢复系统参数失败:', e);
+      }
+    }
+
+    // 重置系统参数到默认值
+    function resetSystemParams() {
+      $('salesTaxRate').value = SYSTEM_DEFAULTS.salesTaxRate * 100;
+      $('outputTaxRate').value = SYSTEM_DEFAULTS.outputTaxRate * 100;
+      $('inputTaxRate').value = SYSTEM_DEFAULTS.inputTaxRate * 100;
+      $('serviceVATRate').value = SYSTEM_DEFAULTS.serviceVATRate * 100;
+      $('platformRate').value = SYSTEM_DEFAULTS.platformRate * 100;
+      $('shippingCost').value = SYSTEM_DEFAULTS.shippingCost;
+      $('shippingInsurance').value = SYSTEM_DEFAULTS.shippingInsurance;
+      $('otherCost').value = SYSTEM_DEFAULTS.otherCost;
+      
+      // 保存到本地存储
+      saveSystemParams();
+      
+      // 重新计算
+      recalc();
+      
+      console.log('已重置系统参数到默认值');
     }
     
     // 从本地存储恢复用户数据
@@ -672,35 +843,58 @@
       }
     }
     
-    // 事件绑定
-    [inCost, selCate, ...document.querySelectorAll('input[name="targetM"]')].forEach(el=>{
-      el.addEventListener('input', recalc);
-      el.addEventListener('change', recalc);
-      if (el.tagName === 'INPUT') el.addEventListener('focus', ()=> el.select());
+    // 事件绑定函数
+    function bindEvents() {
+      // 获取所有系统参数输入框
+      const systemParamInputs = [
+        'salesTaxRate', 'outputTaxRate', 'inputTaxRate', 'serviceVATRate',
+        'platformRate', 'shippingCost', 'shippingInsurance', 'otherCost'
+      ].map(id => $(id));
+
+      // 事件绑定
+      [inCost, selCate, ...document.querySelectorAll('input[name="targetM"]'), ...systemParamInputs].forEach(el=>{
+        if (el) {
+          el.addEventListener('input', recalc);
+          el.addEventListener('change', recalc);
+          if (el.tagName === 'INPUT') el.addEventListener('focus', ()=> el.select());
+          
+          // 添加本地存储事件
+          if (systemParamInputs.includes(el)) {
+            // 系统参数输入框
+            el.addEventListener('change', saveSystemParams);
+            el.addEventListener('blur', saveSystemParams);
+          } else {
+            // 用户数据输入框
+            el.addEventListener('change', saveUserData);
+            if (el.tagName === 'INPUT') {
+              el.addEventListener('blur', saveUserData);
+            }
+          }
+        }
+      });
       
-      // 添加本地存储事件
-      el.addEventListener('change', saveUserData);
-      if (el.tagName === 'INPUT') {
-        el.addEventListener('blur', saveUserData); // 失去焦点时保存
-      }
-    });
-    
-    // 进货价变化时特别处理内裤类目的广告占比调整
-    inCost.addEventListener('input', function() {
-      const currentCate = selCate.value;
-      if (currentCate && currentCate.startsWith('内裤|')) {
-        // 重新解析类目信息（会根据进货价调整广告占比）
-        recalc();
-      }
-    });
+      // 进货价变化时特别处理内裤类目的广告占比调整
+      inCost.addEventListener('input', function() {
+        const currentCate = selCate.value;
+        if (currentCate && currentCate.startsWith('内裤|')) {
+          // 重新解析类目信息（会根据进货价调整广告占比）
+          recalc();
+        }
+      });
+    }
     
     // 为新的清除按钮添加事件监听器
     document.getElementById('clearBtn').addEventListener('click', clearUserData);
+    
+    // 为重置参数按钮添加事件监听器
+    document.getElementById('resetParamsBtn').addEventListener('click', resetSystemParams);
 
     // 页面初始化
     function initPage() {
-      restoreUserData(); // 恢复用户数据
-      recalc();         // 初次计算
+      restoreUserData();     // 恢复用户数据
+      restoreSystemParams(); // 恢复系统参数
+      bindEvents();          // 绑定事件监听器
+      recalc();             // 初次计算
     }
 
     // 页面加载完成后初始化
