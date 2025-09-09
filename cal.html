@@ -261,7 +261,7 @@
     <div class="wrap">
       <!-- 左：输入与固定参数展示 -->
       <section class="card">
-        <h2>参数与输入 <button class="clear-btn" id="clearBtn" title="清除所有保存的输入数据">恢复默认</button></h2>
+        <h2>参数与输入 <button class="clear-btn" id="clearBtn" title="清除所有保存的输入数据和系统参数">恢复默认</button></h2>
         <div class="content">
           <div class="grid grid-3565">
             <div>
@@ -339,9 +339,6 @@
                 <label>其他成本（元）</label>
                 <input id="otherCost" type="number" step="0.1" min="0" value="2.5" placeholder="2.5" />
               </div>
-            </div>
-            <div style="margin-top:12px; text-align:center">
-              <button class="clear-btn" id="resetParamsBtn" title="恢复系统默认参数">恢复默认参数</button>
             </div>
           </div>
         </div>
@@ -726,6 +723,7 @@
     function saveUserData() {
       const userData = {
         costPrice: inCost.value,
+        category: selCate.value,
         targetMargin: (document.querySelector('input[name="targetM"]:checked') || {}).value || '0.05'
       };
       try {
@@ -811,7 +809,10 @@
             inCost.value = userData.costPrice;
           }
           
-          // 不恢复品类，避免误算；默认保持未选择
+          // 恢复品类选择
+          if (userData.category && userData.category.trim()) {
+            selCate.value = userData.category;
+          }
           
           // 恢复目标利润率
           if (userData.targetMargin) {
@@ -828,18 +829,32 @@
       }
     }
     
-    // 清除本地存储数据
+    // 清除本地存储数据并重置系统参数
     function clearUserData() {
       try {
+        // 清除用户数据
         localStorage.removeItem(STORAGE_KEY);
-        // 重置表单到默认值
+        localStorage.removeItem(PARAMS_STORAGE_KEY);
+        
+        // 重置用户输入到默认值
         inCost.value = '';
         selCate.value = '';
         document.querySelector('input[name="targetM"][value="0.05"]').checked = true;
-        console.log('已清除本地存储数据');
+        
+        // 重置系统参数到默认值
+        $('salesTaxRate').value = SYSTEM_DEFAULTS.salesTaxRate * 100;
+        $('outputTaxRate').value = SYSTEM_DEFAULTS.outputTaxRate * 100;
+        $('inputTaxRate').value = SYSTEM_DEFAULTS.inputTaxRate * 100;
+        $('serviceVATRate').value = SYSTEM_DEFAULTS.serviceVATRate * 100;
+        $('platformRate').value = SYSTEM_DEFAULTS.platformRate * 100;
+        $('shippingCost').value = SYSTEM_DEFAULTS.shippingCost;
+        $('shippingInsurance').value = SYSTEM_DEFAULTS.shippingInsurance;
+        $('otherCost').value = SYSTEM_DEFAULTS.otherCost;
+        
+        console.log('已清除所有数据并重置到默认值');
         recalc(); // 重新计算
       } catch (e) {
-        console.warn('清除本地存储数据失败:', e);
+        console.warn('清除数据失败:', e);
       }
     }
     
@@ -864,10 +879,13 @@
             el.addEventListener('change', saveSystemParams);
             el.addEventListener('blur', saveSystemParams);
           } else {
-            // 用户数据输入框
+            // 用户数据输入框（包括品类选择）
             el.addEventListener('change', saveUserData);
             if (el.tagName === 'INPUT') {
               el.addEventListener('blur', saveUserData);
+            }
+            if (el.tagName === 'SELECT') {
+              el.addEventListener('change', saveUserData);
             }
           }
         }
@@ -883,11 +901,8 @@
       });
     }
     
-    // 为新的清除按钮添加事件监听器
+    // 为清除按钮添加事件监听器
     document.getElementById('clearBtn').addEventListener('click', clearUserData);
-    
-    // 为重置参数按钮添加事件监听器
-    document.getElementById('resetParamsBtn').addEventListener('click', resetSystemParams);
 
     // 页面初始化
     function initPage() {
